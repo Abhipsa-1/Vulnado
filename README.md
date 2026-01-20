@@ -12,69 +12,7 @@ Build a foundation for AI-based remediation recommendations
 🧠 High-Level System Architecture
 # VulnGurad-AI
 AI-Powered Cyber Vulnerability Intelligence &amp; Remediation Framework
-┌─────────────────────────────────────────┐
-│ NVD Feeds | CVE | MITRE ATT&CK          │
-└──────────────────────┬──────────────────┘
-                       ↓
-┌─────────────────────────────────────────┐
-│ Data Ingestion Layer                   │
-│ • NVD API / Feeds                      │
-│ • CVE Metadata Extraction              │
-│ • Scheduled Jobs                       │
-└──────────────────────┬──────────────────┘
-                       ↓
-┌─────────────────────────────────────────┐
-│ Data Preprocessing Layer               │
-│ • Data Cleaning                        │
-│ • CVE Parsing                          │
-│ • Text Normalization                   │
-└──────────────────────┬──────────────────┘
-                       ↓
-┌─────────────────────────────────────────┐
-│ Intelligence Layer                     │
-│ • CVE Risk Analysis                    │
-│ • MITRE ATT&CK Mapping                 │
-│ • Knowledge Enrichment                 │
-└──────────────────────┬──────────────────┘
-                       ↓
-┌─────────────────────────────────────────┐
-│ Visualization / Analysis Layer         │
-│ • Dashboards                           │
-│ • Query & Insights                     │
-└─────────────────────────────────────────┘
+<img width="315" height="559" alt="Screenshot 2026-01-20 at 11 24 48 PM" src="https://github.com/user-attachments/assets/7aca3f0f-855a-4426-8ad7-edf19ceb2463" />
 
 
-📁 Repository Structure (GitHub)
-AI-VulnGuard/
-│
-├── data/
-│   ├── raw/
-│   │   └── cve_raw.json
-│   ├── processed/
-│   │   └── cve_cleaned.csv
-│
-├── ingestion/
-│   ├── fetch_nvd.py
-│   ├── scraper.py
-│   └── scheduler.py
-│
-├── preprocessing/
-│   ├── clean_text.py
-│   ├── parse_cve.py
-│
-├── ai_engine/
-│   ├── nlp_classifier.py
-│   ├── risk_model.py
-│   ├── attack_mapper.py
-│   └── knowledge_graph.py
-│
-├── remediation/
-│   └── recommendation_engine.py
-│
-├── ui/
-│   ├── dashboard/
-│   └── chatbot/
-│
-├── README.md
-├── requirements.txt
-└── config.yaml
+<img width="311" height="700" alt="Screenshot 2026-01-20 at 11 26 10 PM" src="https://github.com/user-attachments/assets/da79ca67-4ab8-4520-9bd1-8b60b9c12d64" />
