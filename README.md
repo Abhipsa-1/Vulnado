@@ -10,7 +10,7 @@ Enable risk-aware vulnerability prioritization
 Build a foundation for AI-based remediation recommendations
 
 🧠 High-Level System Architecture
-# VulnGurad-AI
+# VulnGuard-AI
 AI-Powered Cyber Vulnerability Intelligence &amp; Remediation Framework
 <img width="315" height="559" alt="Screenshot 2026-01-20 at 11 24 48 PM" src="https://github.com/user-attachments/assets/7aca3f0f-855a-4426-8ad7-edf19ceb2463" />
 
