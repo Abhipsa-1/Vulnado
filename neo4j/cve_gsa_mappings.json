@@ -1,0 +1,152 @@
+[
+  {
+    "cve_id": "CVE-2026-21883",
+    "gsa_id": "CVE-2026-21883",
+    "package": "bokeh",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2026-23519",
+    "gsa_id": "CVE-2026-23519",
+    "package": "cmov",
+    "severity": "CRITICAL"
+  },
+  {
+    "cve_id": "CVE-2026-24049",
+    "gsa_id": "CVE-2026-24049",
+    "package": "wheel",
+    "severity": "HIGH"
+  },
+  {
+    "cve_id": "CVE-2026-0798",
+    "gsa_id": "CVE-2026-0798",
+    "package": "code.gitea.io/gitea",
+    "severity": "LOW"
+  },
+  {
+    "cve_id": "CVE-2026-20736",
+    "gsa_id": "CVE-2026-20736",
+    "package": "code.gitea.io/gitea",
+    "severity": "HIGH"
+  },
+  {
+    "cve_id": "CVE-2026-20750",
+    "gsa_id": "CVE-2026-20750",
+    "package": "github.com/go-gitea/gitea",
+    "severity": "CRITICAL"
+  },
+  {
+    "cve_id": "CVE-2026-20800",
+    "gsa_id": "CVE-2026-20800",
+    "package": "github.com/go-gitea/gitea",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2026-20883",
+    "gsa_id": "CVE-2026-20883",
+    "package": "github.com/go-gitea/gitea",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2026-20888",
+    "gsa_id": "CVE-2026-20888",
+    "package": "github.com/go-gitea/gitea",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2026-20897",
+    "gsa_id": "CVE-2026-20897",
+    "package": "github.com/go-gitea/gitea",
+    "severity": "CRITICAL"
+  },
+  {
+    "cve_id": "CVE-2026-20904",
+    "gsa_id": "CVE-2026-20904",
+    "package": "github.com/go-gitea/gitea",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2026-20912",
+    "gsa_id": "CVE-2026-20912",
+    "package": "github.com/go-gitea/gitea",
+    "severity": "CRITICAL"
+  },
+  {
+    "cve_id": "CVE-2026-0994",
+    "gsa_id": "CVE-2026-0994",
+    "package": "protobuf",
+    "severity": "HIGH"
+  },
+  {
+    "cve_id": "CVE-2026-24421",
+    "gsa_id": "CVE-2026-24421",
+    "package": "thorsten/phpmyfaq",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2026-24420",
+    "gsa_id": "CVE-2026-24420",
+    "package": "thorsten/phpmyfaq",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2026-24422",
+    "gsa_id": "CVE-2026-24422",
+    "package": "thorsten/phpmyfaq",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2025-24976",
+    "gsa_id": "CVE-2025-24976",
+    "package": "github.com/distribution/distribution/v3",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2025-31130",
+    "gsa_id": "CVE-2025-31130",
+    "package": "gix-worktree-state",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2025-32963",
+    "gsa_id": "CVE-2025-32963",
+    "package": "github.com/minio/operator",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2025-30167",
+    "gsa_id": "CVE-2025-30167",
+    "package": "jupyter_core",
+    "severity": "HIGH"
+  },
+  {
+    "cve_id": "CVE-2025-59432",
+    "gsa_id": "CVE-2025-59432",
+    "package": "com.ongres.scram:scram-common",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2025-14894",
+    "gsa_id": "CVE-2025-14894",
+    "package": "livewire-filemanager/filemanager",
+    "severity": "CRITICAL"
+  },
+  {
+    "cve_id": "CVE-2025-67221",
+    "gsa_id": "CVE-2025-67221",
+    "package": "orjson",
+    "severity": "HIGH"
+  },
+  {
+    "cve_id": "CVE-2025-67124",
+    "gsa_id": "CVE-2025-67124",
+    "package": "miniserve",
+    "severity": "MEDIUM"
+  },
+  {
+    "cve_id": "CVE-2025-71177",
+    "gsa_id": "CVE-2025-71177",
+    "package": "lavalite/cms",
+    "severity": "MEDIUM"
+  }
+]

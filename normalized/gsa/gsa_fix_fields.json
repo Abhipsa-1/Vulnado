@@ -1,0 +1,752 @@
+[
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-4249-gjr8-jpq3",
+    "severity": "HIGH",
+    "package_name": "prosemirror_to_html",
+    "vulnerable_versions": "< 0.2.1",
+    "fixed_version": "0.2.1",
+    "references": [
+      "https://github.com/etaminstudio/prosemirror_to_html/security/advisories/GHSA-52c5-vh7f-26fx",
+      "https://github.com/etaminstudio/prosemirror_to_html/commit/4d59f94f550bcabeec30d298791bbdd883298ad8",
+      "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html",
+      "https://github.com/etaminstudio/prosemirror_to_html/blob/ea8beb32f6c37f29f042ba4155ccf18504da716e/lib/prosemirror_to_html.rb#L249",
+      "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/prosemirror_to_html/GHSA-vfpf-xmwh-8m65.yml",
+      "https://github.com/advisories/GHSA-4249-gjr8-jpq3"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-gq4h-f254-7cw9",
+    "severity": "HIGH",
+    "package_name": "ticketed_lock",
+    "vulnerable_versions": "< 0.3.0",
+    "fixed_version": "0.3.0",
+    "references": [
+      "https://github.com/kvark/ticketed_lock/issues/7",
+      "https://rustsec.org/advisories/RUSTSEC-2020-0119.html",
+      "https://github.com/kvark/ticketed_lock/commit/a986a9335d591fa5c826157d1674d47aa525357f",
+      "https://github.com/advisories/GHSA-gq4h-f254-7cw9"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-7fpj-wc8v-9cgc",
+    "severity": "CRITICAL",
+    "package_name": "terminal42/contao-tablelookupwizard",
+    "vulnerable_versions": ">= 1.0.0, < 3.3.5",
+    "fixed_version": "3.3.5",
+    "references": [
+      "https://github.com/terminal42/contao-tablelookupwizard/security/advisories/GHSA-v3mr-gp7j-pw5w",
+      "https://github.com/terminal42/contao-tablelookupwizard/commit/a5e723a28f110b7df8ffc4175cef9b061d3cc717",
+      "https://github.com/FriendsOfPHP/security-advisories/blob/master/terminal42/contao-tablelookupwizard/2022-02-04-1.yaml",
+      "https://github.com/advisories/GHSA-7fpj-wc8v-9cgc"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-fjr2-r2mp-484p",
+    "severity": "CRITICAL",
+    "package_name": "simplesamlphp/simplesamlphp",
+    "vulnerable_versions": ">= 1.12.0, < 1.14.17",
+    "fixed_version": "1.14.17",
+    "references": [
+      "https://github.com/simplesamlphp/simplesamlphp/commit/e2d53086abbb253efb24ddcb49b116246eb0b6ca",
+      "https://github.com/FriendsOfPHP/security-advisories/blob/master/simplesamlphp/simplesamlphp/201710-01.yaml",
+      "https://simplesamlphp.org/security/201710-01",
+      "https://github.com/advisories/GHSA-fjr2-r2mp-484p"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-r88h-6987-g79f",
+    "severity": "HIGH",
+    "package_name": "syncpool",
+    "vulnerable_versions": "< 0.1.6",
+    "fixed_version": "0.1.6",
+    "references": [
+      "https://github.com/Chopinsky/byte_buffer/issues/2",
+      "https://github.com/RustSec/advisory-db/blob/main/crates/syncpool/RUSTSEC-2020-0142.md",
+      "https://rustsec.org/advisories/RUSTSEC-2020-0142.html",
+      "https://github.com/Chopinsky/byte_buffer/commit/15b282877d1e576de2b337d8162bbf43ed1a0f2d",
+      "https://github.com/advisories/GHSA-r88h-6987-g79f"
+    ]
+  },
+  {
+    "cve_id": "CVE-2021-4238",
+    "ghsa_id": "GHSA-xg2h-wx96-xgxr",
+    "severity": "LOW",
+    "package_name": "github.com/Masterminds/goutils",
+    "vulnerable_versions": "< 1.1.1",
+    "fixed_version": "1.1.1",
+    "references": [
+      "https://github.com/Masterminds/goutils/security/advisories/GHSA-xg2h-wx96-xgxr",
+      "https://github.com/Masterminds/goutils/commit/f1923532a168b8203bfe956d8cd3b17ebece5982",
+      "https://github.com/Masterminds/goutils/releases/tag/v1.1.1",
+      "https://github.com/Masterminds/goutils/commit/869801f20f9f1e7ecdbdb6422049d8241270d5e1",
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-4238",
+      "https://pkg.go.dev/vuln/GO-2022-0411",
+      "https://github.com/advisories/GHSA-xg2h-wx96-xgxr"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-3839-6r69-m497",
+    "severity": "CRITICAL",
+    "package_name": "github.com/Masterminds/goutils",
+    "vulnerable_versions": "< 1.1.1",
+    "fixed_version": "1.1.1",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-4238",
+      "https://github.com/Masterminds/goutils/commit/869801f20f9f1e7ecdbdb6422049d8241270d5e1",
+      "https://pkg.go.dev/vuln/GO-2022-0411",
+      "https://github.com/advisories/GHSA-3839-6r69-m497"
+    ]
+  },
+  {
+    "cve_id": "CVE-2017-16087",
+    "ghsa_id": "GHSA-qr32-j4j6-3m7r",
+    "severity": "HIGH",
+    "package_name": "fs-git",
+    "vulnerable_versions": "< 1.0.2",
+    "fixed_version": "1.0.2",
+    "references": [
+      "https://github.com/vvakame/fs-git/commit/eb5f70efa5cfbff1ab299fa7daaa5de549243998",
+      "https://github.com/vvakame/fs-git/commit/eb5f70efa5cfbff1ab299fa7daaa5de549243998#diff-13b5b151431c7e7a17f273559ed212d5",
+      "https://www.npmjs.com/advisories/360",
+      "https://nvd.nist.gov/vuln/detail/CVE-2017-16087",
+      "https://github.com/advisories/GHSA-qr32-j4j6-3m7r"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-8whr-v3gm-w8h9",
+    "severity": "HIGH",
+    "package_name": "node-rules",
+    "vulnerable_versions": "< 5.0.0",
+    "fixed_version": "5.0.0",
+    "references": [
+      "https://github.com/mithunsatheesh/node-rules/issues/84",
+      "https://snyk.io/vuln/SNYK-JS-NODERULES-560426",
+      "https://github.com/mithunsatheesh/node-rules/commit/100862223904bb6478fcc33b701c7dee11f7b832",
+      "https://github.com/advisories/GHSA-8whr-v3gm-w8h9"
+    ]
+  },
+  {
+    "cve_id": "CVE-2021-32685",
+    "ghsa_id": "GHSA-7r96-8g3x-g36m",
+    "severity": "CRITICAL",
+    "package_name": "tenvoy",
+    "vulnerable_versions": "< 7.0.3",
+    "fixed_version": "7.0.3",
+    "references": [
+      "https://github.com/TogaTech/tEnvoy/security/advisories/GHSA-7r96-8g3x-g36m",
+      "https://github.com/TogaTech/tEnvoy/commit/a121b34a45e289d775c62e58841522891dee686b",
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-32685",
+      "https://github.com/TogaTech/tEnvoy/releases/tag/v7.0.3",
+      "https://github.com/advisories/GHSA-7r96-8g3x-g36m"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-5w25-hxp5-h8c9",
+    "severity": "CRITICAL",
+    "package_name": "tenvoy",
+    "vulnerable_versions": "< 7.0.3",
+    "fixed_version": "7.0.3",
+    "references": [
+      "https://github.com/TogaTech/tEnvoy/security/advisories/GHSA-7r96-8g3x-g36m",
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-32685",
+      "https://github.com/TogaTech/tEnvoy/commit/a121b34a45e289d775c62e58841522891dee686b",
+      "https://github.com/TogaTech/tEnvoy/releases/tag/v7.0.3",
+      "https://github.com/advisories/GHSA-5w25-hxp5-h8c9"
+    ]
+  },
+  {
+    "cve_id": "CVE-2022-23409",
+    "ghsa_id": "GHSA-9chx-2vqw-8vq5",
+    "severity": "MODERATE",
+    "package_name": "ether/logs",
+    "vulnerable_versions": "< 3.0.4",
+    "fixed_version": "3.0.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2022-23409",
+      "https://plugins.craftcms.com/logs",
+      "http://packetstormsecurity.com/files/165706/Ethercreative-Logs-3.0.3-Path-Traversal.html",
+      "https://github.com/ethercreative/logs/commit/eb225cc78b1123a10ce2784790f232d71c2066c4",
+      "https://sec-consult.com/vulnerability-lab",
+      "https://github.com/advisories/GHSA-9chx-2vqw-8vq5"
+    ]
+  },
+  {
+    "cve_id": "CVE-2021-4236",
+    "ghsa_id": "GHSA-5gjg-jgh4-gppm",
+    "severity": "CRITICAL",
+    "package_name": "github.com/ecnepsnai/web",
+    "vulnerable_versions": ">= 1.4.0, < 1.5.2",
+    "fixed_version": "1.5.2",
+    "references": [
+      "https://github.com/ecnepsnai/web/security/advisories/GHSA-5gjg-jgh4-gppm",
+      "https://github.com/ecnepsnai/web/commit/5a78f8d5c41ce60dcf9f61aaf47a7a8dc3e0002f",
+      "https://pkg.go.dev/vuln/GO-2021-0107",
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-4236",
+      "https://github.com/advisories/GHSA-5gjg-jgh4-gppm"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-jpgg-cp2x-qrw3",
+    "severity": "CRITICAL",
+    "package_name": "github.com/ecnepsnai/web",
+    "vulnerable_versions": ">= 1.4.0, < 1.5.2",
+    "fixed_version": "1.5.2",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-4236",
+      "https://github.com/ecnepsnai/web/commit/5a78f8d5c41ce60dcf9f61aaf47a7a8dc3e0002f",
+      "https://pkg.go.dev/vuln/GO-2021-0107",
+      "https://github.com/advisories/GHSA-jpgg-cp2x-qrw3"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-w277-wpqf-rcfv",
+    "severity": "MODERATE",
+    "package_name": "svix",
+    "vulnerable_versions": "< 1.17.0",
+    "fixed_version": "1.17.0",
+    "references": [
+      "https://github.com/svix/svix-webhooks/pull/1190",
+      "https://github.com/svix/svix-webhooks/commit/958821bd3b956d1436af65f70a0964d4ffb7daf6",
+      "https://rustsec.org/advisories/RUSTSEC-2024-0010.html",
+      "https://github.com/advisories/GHSA-w277-wpqf-rcfv"
+    ]
+  },
+  {
+    "cve_id": "CVE-2022-2584",
+    "ghsa_id": "GHSA-g3vv-g2j5-45f2",
+    "severity": "HIGH",
+    "package_name": "github.com/ipld/go-codec-dagpb",
+    "vulnerable_versions": "< 1.3.1",
+    "fixed_version": "1.3.1",
+    "references": [
+      "https://github.com/ipld/go-codec-dagpb/security/advisories/GHSA-g3vv-g2j5-45f2",
+      "https://github.com/ipld/go-codec-dagpb/commit/a17ace35cc760a2698645c09868f9050fa219f57",
+      "https://pkg.go.dev/vuln/GO-2022-0422",
+      "https://nvd.nist.gov/vuln/detail/CVE-2022-2584",
+      "https://github.com/advisories/GHSA-g3vv-g2j5-45f2"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-967g-cjx4-h7j6",
+    "severity": "HIGH",
+    "package_name": "github.com/ipld/go-codec-dagpb",
+    "vulnerable_versions": "< 1.3.1",
+    "fixed_version": "1.3.1",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2022-2584",
+      "https://github.com/ipld/go-codec-dagpb/commit/a17ace35cc760a2698645c09868f9050fa219f57",
+      "https://pkg.go.dev/vuln/GO-2022-0422",
+      "https://github.com/advisories/GHSA-967g-cjx4-h7j6"
+    ]
+  },
+  {
+    "cve_id": "CVE-2019-25055",
+    "ghsa_id": "GHSA-xvcg-2q82-r87j",
+    "severity": "HIGH",
+    "package_name": "libpulse-binding",
+    "vulnerable_versions": "< 2.6.0",
+    "fixed_version": "2.6.0",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2019-25055",
+      "https://raw.githubusercontent.com/rustsec/advisory-db/main/crates/libpulse-binding/RUSTSEC-2019-0038.md",
+      "https://rustsec.org/advisories/RUSTSEC-2019-0038.html",
+      "https://github.com/jnqnfe/pulse-binding-rust/commit/7fd282aef7787577c385aed88cb25d004b85f494",
+      "https://github.com/advisories/GHSA-xvcg-2q82-r87j"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-wcxc-jf6c-8rx9",
+    "severity": "MODERATE",
+    "package_name": "libpulse-binding",
+    "vulnerable_versions": "< 2.6.0",
+    "fixed_version": "2.6.0",
+    "references": [
+      "https://github.com/jnqnfe/pulse-binding-rust/commit/7fd282aef7787577c385aed88cb25d004b85f494",
+      "https://rustsec.org/advisories/RUSTSEC-2019-0038.html",
+      "https://github.com/advisories/GHSA-wcxc-jf6c-8rx9"
+    ]
+  },
+  {
+    "cve_id": "CVE-2022-24727",
+    "ghsa_id": "GHSA-h2g5-2rhx-ffgj",
+    "severity": "HIGH",
+    "package_name": "Weblate",
+    "vulnerable_versions": "< 4.11.1",
+    "fixed_version": "4.11.1",
+    "references": [
+      "https://github.com/WeblateOrg/weblate/security/advisories/GHSA-3872-f48p-pxqj",
+      "https://nvd.nist.gov/vuln/detail/CVE-2022-24727",
+      "https://github.com/WeblateOrg/weblate/commit/35d59f1f040541c358cece0a8d4a63183ca919b8",
+      "https://github.com/WeblateOrg/weblate/commit/d83672a3e7415da1490334e2c9431e5da1966842",
+      "https://github.com/advisories/GHSA-h2g5-2rhx-ffgj"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-23519",
+    "ghsa_id": "GHSA-2gqc-6j2q-83qp",
+    "severity": "HIGH",
+    "package_name": "cmov",
+    "vulnerable_versions": "< 0.4.4",
+    "fixed_version": "0.4.4",
+    "references": [
+      "https://github.com/RustCrypto/utils/security/advisories/GHSA-2gqc-6j2q-83qp",
+      "https://github.com/RustCrypto/utils/commit/55977257e7c82a309d5e8abfdd380a774f0f9778",
+      "https://rustsec.org/advisories/RUSTSEC-2026-0003.html",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-23519",
+      "https://github.com/advisories/GHSA-2gqc-6j2q-83qp"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-64501",
+    "ghsa_id": "GHSA-52c5-vh7f-26fx",
+    "severity": "HIGH",
+    "package_name": "prosemirror_to_html",
+    "vulnerable_versions": "< 0.2.1",
+    "fixed_version": "0.2.1",
+    "references": [
+      "https://github.com/etaminstudio/prosemirror_to_html/security/advisories/GHSA-52c5-vh7f-26fx",
+      "https://github.com/etaminstudio/prosemirror_to_html/commit/4d59f94f550bcabeec30d298791bbdd883298ad8",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-64501",
+      "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/prosemirror_to_html/CVE-2025-64501.yml",
+      "https://github.com/etaminstudio/prosemirror_to_html/blob/ea8beb32f6c37f29f042ba4155ccf18504da716e/lib/prosemirror_to_html.rb#L249",
+      "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/prosemirror_to_html/GHSA-vfpf-xmwh-8m65.yml",
+      "https://github.com/advisories/GHSA-52c5-vh7f-26fx"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-v3mr-gp7j-pw5w",
+    "severity": "CRITICAL",
+    "package_name": "terminal42/contao-tablelookupwizard",
+    "vulnerable_versions": "< 3.3.5",
+    "fixed_version": "3.3.5",
+    "references": [
+      "https://github.com/terminal42/contao-tablelookupwizard/security/advisories/GHSA-v3mr-gp7j-pw5w",
+      "https://github.com/terminal42/contao-tablelookupwizard/commit/a5e723a28f110b7df8ffc4175cef9b061d3cc717",
+      "https://github.com/FriendsOfPHP/security-advisories/blob/master/terminal42/contao-tablelookupwizard/2022-02-04-1.yaml",
+      "https://github.com/advisories/GHSA-v3mr-gp7j-pw5w"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-24422",
+    "ghsa_id": "GHSA-j4rc-96xj-gvqc",
+    "severity": "MODERATE",
+    "package_name": "thorsten/phpmyfaq",
+    "vulnerable_versions": "<= 4.0.16",
+    "fixed_version": "4.0.17",
+    "references": [
+      "https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-j4rc-96xj-gvqc",
+      "https://github.com/advisories/GHSA-j4rc-96xj-gvqc"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-24421",
+    "ghsa_id": "GHSA-wm8h-26fv-mg7g",
+    "severity": "MODERATE",
+    "package_name": "thorsten/phpmyfaq",
+    "vulnerable_versions": "<= 4.0.16",
+    "fixed_version": "4.0.17",
+    "references": [
+      "https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-wm8h-26fv-mg7g",
+      "https://github.com/advisories/GHSA-wm8h-26fv-mg7g"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-24420",
+    "ghsa_id": "GHSA-7p9h-m7m8-vhhv",
+    "severity": "MODERATE",
+    "package_name": "thorsten/phpmyfaq",
+    "vulnerable_versions": "<= 4.0.16",
+    "fixed_version": "4.0.17",
+    "references": [
+      "https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-7p9h-m7m8-vhhv",
+      "https://github.com/advisories/GHSA-7p9h-m7m8-vhhv"
+    ]
+  },
+  {
+    "cve_id": "CVE-2020-7609",
+    "ghsa_id": "GHSA-f78f-353m-cf4j",
+    "severity": "CRITICAL",
+    "package_name": "node-rules",
+    "vulnerable_versions": ">= 3.0.0, < 5.0.0",
+    "fixed_version": "5.0.0",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2020-7609",
+      "https://github.com/mithunsatheesh/node-rules/commit/100862223904bb6478fcc33b701c7dee11f7b832",
+      "https://snyk.io/vuln/SNYK-JS-NODERULES-560426",
+      "https://github.com/mithunsatheesh/node-rules/issues/84",
+      "https://github.com/advisories/GHSA-f78f-353m-cf4j"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-71177",
+    "ghsa_id": "GHSA-w7rq-fgx4-4xcm",
+    "severity": "MODERATE",
+    "package_name": "lavalite/cms",
+    "vulnerable_versions": "<= 10.1.0",
+    "fixed_version": null,
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-71177",
+      "https://github.com/LavaLite/cms/issues/420",
+      "https://lavalite.org",
+      "https://www.vulncheck.com/advisories/lavalite-cms-stored-xss-via-package-creation-and-search",
+      "https://github.com/advisories/GHSA-w7rq-fgx4-4xcm"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-67124",
+    "ghsa_id": "GHSA-mxc8-4jqf-368q",
+    "severity": "MODERATE",
+    "package_name": "miniserve",
+    "vulnerable_versions": "< 0.32.0",
+    "fixed_version": "0.32.0",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-67124",
+      "https://gist.github.com/thesmartshadow/55688f87f8b985eb530e07d00ef8c63f",
+      "https://github.com/svenstaro/miniserve",
+      "https://github.com/advisories/GHSA-mxc8-4jqf-368q"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-20904",
+    "ghsa_id": "GHSA-qqgv-v353-cv8p",
+    "severity": "MODERATE",
+    "package_name": "github.com/go-gitea/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-20904",
+      "https://github.com/go-gitea/gitea/pull/36346",
+      "https://github.com/go-gitea/gitea/pull/36361",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/go-gitea/gitea/commit/ed5720af2ac94d74f822721c05b42b6148ff9c22",
+      "https://github.com/advisories/GHSA-qqgv-v353-cv8p"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-20912",
+    "ghsa_id": "GHSA-4xx9-vc8v-87hv",
+    "severity": "MODERATE",
+    "package_name": "github.com/go-gitea/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-20912",
+      "https://github.com/go-gitea/gitea/pull/36320",
+      "https://github.com/go-gitea/gitea/pull/36355",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/go-gitea/gitea/commit/fbea2c68e8df11cfa94e8ead913b79946780ed30",
+      "https://github.com/advisories/GHSA-4xx9-vc8v-87hv"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-20897",
+    "ghsa_id": "GHSA-393c-qgvj-3xph",
+    "severity": "MODERATE",
+    "package_name": "github.com/go-gitea/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-20897",
+      "https://github.com/go-gitea/gitea/pull/36344",
+      "https://github.com/go-gitea/gitea/pull/36349",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/go-gitea/gitea/commit/da036f3f35ca830b22cf4480912ed261303b798f",
+      "https://github.com/advisories/GHSA-393c-qgvj-3xph"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-20888",
+    "ghsa_id": "GHSA-9cgq-wp42-4rpq",
+    "severity": "MODERATE",
+    "package_name": "github.com/go-gitea/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-20888",
+      "https://github.com/go-gitea/gitea/pull/36341",
+      "https://github.com/go-gitea/gitea/pull/36356",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/advisories/GHSA-9cgq-wp42-4rpq"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-20750",
+    "ghsa_id": "GHSA-rw22-5hhq-pfpf",
+    "severity": "MODERATE",
+    "package_name": "github.com/go-gitea/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-20750",
+      "https://github.com/go-gitea/gitea/pull/36318",
+      "https://github.com/go-gitea/gitea/pull/36373",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/go-gitea/gitea/commit/7b5de594cd92e30b9c3d40ffda119acad794cc64",
+      "https://github.com/advisories/GHSA-rw22-5hhq-pfpf"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-20883",
+    "ghsa_id": "GHSA-j8xr-c56q-m8jj",
+    "severity": "LOW",
+    "package_name": "github.com/go-gitea/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-20883",
+      "https://github.com/go-gitea/gitea/pull/36340",
+      "https://github.com/go-gitea/gitea/pull/36368",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/go-gitea/gitea/commit/95ea2df00a70176c516b12f3cfee8c84a310280f",
+      "https://github.com/advisories/GHSA-j8xr-c56q-m8jj"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-20800",
+    "ghsa_id": "GHSA-2vgv-hgv4-22mh",
+    "severity": "LOW",
+    "package_name": "github.com/go-gitea/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-20800",
+      "https://github.com/go-gitea/gitea/pull/36339",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/go-gitea/gitea/commit/67e75f30a83d2523cedc37ad7b03bcba66947833",
+      "https://github.com/advisories/GHSA-2vgv-hgv4-22mh"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-20736",
+    "ghsa_id": "GHSA-hgr3-x44x-33hx",
+    "severity": "LOW",
+    "package_name": "code.gitea.io/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-20736",
+      "https://github.com/go-gitea/gitea/pull/36320",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/go-gitea/gitea/commit/fbea2c68e8df11cfa94e8ead913b79946780ed30",
+      "https://github.com/advisories/GHSA-hgr3-x44x-33hx"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-0798",
+    "ghsa_id": "GHSA-8fwc-qjw5-rvgp",
+    "severity": "LOW",
+    "package_name": "code.gitea.io/gitea",
+    "vulnerable_versions": "< 1.25.4",
+    "fixed_version": "1.25.4",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-0798",
+      "https://github.com/go-gitea/gitea/pull/36319",
+      "https://blog.gitea.com/release-of-1.25.4",
+      "https://github.com/go-gitea/gitea/releases/tag/v1.25.4",
+      "https://github.com/advisories/GHSA-8fwc-qjw5-rvgp"
+    ]
+  },
+  {
+    "cve_id": "CVE-2018-3774",
+    "ghsa_id": "GHSA-pv4c-p2j5-38j4",
+    "severity": "CRITICAL",
+    "package_name": "url-parse",
+    "vulnerable_versions": ">= 1.0.0, < 1.4.3",
+    "fixed_version": "1.4.3",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2018-3774",
+      "https://github.com/unshiftio/url-parse/commit/53b1794e54d0711ceb52505e0f74145270570d5a",
+      "https://hackerone.com/reports/384029",
+      "https://github.com/unshiftio/url-parse/commit/d7b582ec1243e8024e60ac0b62d2569c939ef5de",
+      "https://github.com/unshiftio/url-parse/commit/209c296d302317268afbe19700a70c63ecbeb2d2",
+      "https://github.com/unshiftio/url-parse/compare/0.2.3...1.0.0",
+      "https://github.com/advisories/GHSA-pv4c-p2j5-38j4"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-14894",
+    "ghsa_id": "GHSA-9g95-48c6-r778",
+    "severity": "HIGH",
+    "package_name": "livewire-filemanager/filemanager",
+    "vulnerable_versions": "<= 1.0.4",
+    "fixed_version": null,
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-14894",
+      "https://github.com/livewire-filemanager/filemanager",
+      "https://hackingbydoing.wixsite.com/hackingbydoing/post/unauthenticated-rce-in-livewire-filemanager",
+      "https://www.kb.cert.org/vuls/id/650657",
+      "https://github.com/livewire-filemanager/filemanager/blob/master/docs.md#security",
+      "https://github.com/advisories/GHSA-9g95-48c6-r778"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-24049",
+    "ghsa_id": "GHSA-8rrh-rw8j-w5fx",
+    "severity": "HIGH",
+    "package_name": "wheel",
+    "vulnerable_versions": ">= 0.40.0, <= 0.46.1",
+    "fixed_version": "0.46.2",
+    "references": [
+      "https://github.com/pypa/wheel/security/advisories/GHSA-8rrh-rw8j-w5fx",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-24049",
+      "https://github.com/pypa/wheel/commit/7a7d2de96b22a9adf9208afcc9547e1001569fef",
+      "https://github.com/pypa/wheel/releases/tag/0.46.2",
+      "https://github.com/pypa/wheel/commit/934fe177ff912c8e03d5ae951d3805e1fd90ba5e",
+      "https://github.com/advisories/GHSA-8rrh-rw8j-w5fx"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-59432",
+    "ghsa_id": "GHSA-3wfh-36rx-9537",
+    "severity": "MODERATE",
+    "package_name": "com.ongres.scram:scram-common",
+    "vulnerable_versions": "< 3.2",
+    "fixed_version": "3.2",
+    "references": [
+      "https://github.com/ongres/scram/security/advisories/GHSA-3wfh-36rx-9537",
+      "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte%5B%5D,byte%5B%5D)",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-59432",
+      "https://github.com/ongres/scram/commit/e0b0cf99f05406a0d26682c72fcb5728e95124b3",
+      "https://github.com/advisories/GHSA-3wfh-36rx-9537"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-32963",
+    "ghsa_id": "GHSA-7m6v-q233-q9j9",
+    "severity": "MODERATE",
+    "package_name": "github.com/minio/operator",
+    "vulnerable_versions": "< 7.1.0",
+    "fixed_version": "7.1.0",
+    "references": [
+      "https://github.com/minio/operator/security/advisories/GHSA-7m6v-q233-q9j9",
+      "https://github.com/minio/operator/releases/tag/v7.1.0",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-32963",
+      "https://github.com/minio/operator/commit/d586294d526bf0d8e6097225114655f68b0adcc5",
+      "https://github.com/advisories/GHSA-7m6v-q233-q9j9"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-31130",
+    "ghsa_id": "GHSA-2frx-2596-x5r6",
+    "severity": "MODERATE",
+    "package_name": "gix-worktree-state",
+    "vulnerable_versions": "< 0.18.0",
+    "fixed_version": "0.18.0",
+    "references": [
+      "https://github.com/GitoxideLabs/gitoxide/security/advisories/GHSA-2frx-2596-x5r6",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-31130",
+      "https://rustsec.org/advisories/RUSTSEC-2025-0021.html",
+      "https://github.com/GitoxideLabs/gitoxide/commit/f253f02a6658b3b7612a50d56c71f5ae4da4ca21",
+      "https://github.com/advisories/GHSA-2frx-2596-x5r6"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-24976",
+    "ghsa_id": "GHSA-phw4-mc57-4hwc",
+    "severity": "HIGH",
+    "package_name": "github.com/distribution/distribution/v3",
+    "vulnerable_versions": "> 3.0.0-beta.1, < 3.0.0-rc.3",
+    "fixed_version": "3.0.0-rc.3",
+    "references": [
+      "https://github.com/distribution/distribution/security/advisories/GHSA-phw4-mc57-4hwc",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-24976",
+      "https://github.com/distribution/distribution/commit/f4a500caf68169dccb0b54cb90523e68ee1ac2be",
+      "https://github.com/advisories/GHSA-phw4-mc57-4hwc"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-0994",
+    "ghsa_id": "GHSA-7gcm-g887-7qv7",
+    "severity": "HIGH",
+    "package_name": "protobuf",
+    "vulnerable_versions": "<= 6.33.4",
+    "fixed_version": null,
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-0994",
+      "https://github.com/protocolbuffers/protobuf/pull/25239",
+      "https://github.com/protocolbuffers/protobuf/issues/25070",
+      "https://github.com/advisories/GHSA-7gcm-g887-7qv7"
+    ]
+  },
+  {
+    "cve_id": null,
+    "ghsa_id": "GHSA-c32p-wcqj-j677",
+    "severity": "HIGH",
+    "package_name": "github.com/cometbft/cometbft",
+    "vulnerable_versions": "<= 0.37.17",
+    "fixed_version": "0.37.18",
+    "references": [
+      "https://github.com/cometbft/cometbft/security/advisories/GHSA-c32p-wcqj-j677",
+      "https://github.com/cometbft/cometbft/commit/bf8274fcdbcab2bc652660ae627196a90a6efb97",
+      "https://github.com/cometbft/cometbft/releases/tag/v0.37.18",
+      "https://github.com/cometbft/cometbft/releases/tag/v0.38.21",
+      "https://github.com/advisories/GHSA-c32p-wcqj-j677"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-67221",
+    "ghsa_id": "GHSA-hx9q-6w63-j58v",
+    "severity": "MODERATE",
+    "package_name": "orjson",
+    "vulnerable_versions": "<= 3.11.4",
+    "fixed_version": null,
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-67221",
+      "https://github.com/ijl/orjson",
+      "https://github.com/kpatsakis/orjson_vulnerability",
+      "https://github.com/ijl/orjson/issues/620",
+      "https://github.com/kpatsakis/CVE-2025-67221/issues/1",
+      "https://github.com/advisories/GHSA-hx9q-6w63-j58v"
+    ]
+  },
+  {
+    "cve_id": "CVE-2026-21883",
+    "ghsa_id": "GHSA-793v-589g-574v",
+    "severity": "MODERATE",
+    "package_name": "bokeh",
+    "vulnerable_versions": "< 3.8.2",
+    "fixed_version": "3.8.2",
+    "references": [
+      "https://github.com/bokeh/bokeh/security/advisories/GHSA-793v-589g-574v",
+      "https://github.com/bokeh/bokeh/commit/cedd113b0e271b439dce768671685cf5f861812e",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-21883",
+      "https://aydinnyunus.github.io/2026/01/24/bokeh-websocket-hijacking-cve-2026-21883",
+      "https://github.com/advisories/GHSA-793v-589g-574v"
+    ]
+  },
+  {
+    "cve_id": "CVE-2025-30167",
+    "ghsa_id": "GHSA-33p9-3p43-82vq",
+    "severity": "HIGH",
+    "package_name": "jupyter_core",
+    "vulnerable_versions": "< 5.8.0",
+    "fixed_version": "5.8.1",
+    "references": [
+      "https://github.com/jupyter/jupyter_core/security/advisories/GHSA-33p9-3p43-82vq",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-30167",
+      "https://github.com/jupyter/jupyter_core/commit/5e8965600adda6b416692ce7e85ecb2bd814bd52",
+      "https://github.com/advisories/GHSA-33p9-3p43-82vq"
+    ]
+  }
+]

@@ -1,0 +1,7 @@
+requests
+json
+flask
+nltk
+sentence_transformers
+sklearn
+neo4j

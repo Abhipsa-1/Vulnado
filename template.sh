@@ -1,58 +1,75 @@
 #!/bin/bash
 
-project_name="cnnClassifier"
+PROJECT_NAME="VULNGUARD_AI"
 
-files=(
-    ".github/workflows/.gitkeep"
-    "src/$project_name/__init__.py"
-    "src/$project_name/components/__init__.py"
-    "src/$project_name/components/stage__00_data_ingestion.py"
-    "src/$project_name/components/stage__01_data_validation.py"
-    "src/$project_name/components/stage__02_data_transformation.py"
-    "src/$project_name/components/stage__03_model_trainer.py"
-    "src/$project_name/utils/__init__.py"
-    "src/$project_name/utils/util.py"
-    "src/$project_name/config/__init__.py"
-    "src/$project_name/config/configuration.py"
-    "src/$project_name/pipeline/__init__.py"
-    "src/$project_name/pipeline/training_pipeline.py"
-    "src/$project_name/entity/__init__.py"
-    "src/$project_name/entity/config_entity.py"
-    "src/$project_name/constants/__init__.py"
-    "src/$project_name/logger/__init__.py"
-    "src/$project_name/logger/log.py"
-    "src/$project_name/exception/__init__.py"
-    "src/$project_name/exception/exception_handler.py"
-    "config/config.yaml"
-    "dvc.yaml"
-    "app.py"
-    "params.yaml"
-    "requirements.txt"
-    "setup.py"
-    "research/trials.ipynb"
-    "templates/index.html"
-)
+echo "Creating VulnGuard-AI project structure in current directory..."
 
-echo "Starting project structure creation..."
+# GitHub workflows
+mkdir -p .github/workflows
+touch .github/workflows/.gitkeep
 
-for filepath in "${files[@]}"; do
-    dir=$(dirname "$filepath")
-    filename=$(basename "$filepath")
+# Source structure
+mkdir -p src/$PROJECT_NAME/{components,pipeline,entity,utils,config,constants,logger,exception}
+touch src/$PROJECT_NAME/__init__.py
 
-    # Create directory if not empty
-    if [[ "$dir" != "." ]]; then
-        mkdir -p "$dir"
-        echo "Creating directory: $dir for file: $filename"
-    fi
+# Components (pipeline stages)
+touch src/$PROJECT_NAME/components/__init__.py
+touch src/$PROJECT_NAME/components/stage_00_data_ingestion.py
+touch src/$PROJECT_NAME/components/stage_01_data_validation.py
+touch src/$PROJECT_NAME/components/stage_02_data_transformation.py
+touch src/$PROJECT_NAME/components/stage_03_feature_engineering.py
+touch src/$PROJECT_NAME/components/stage_04_attack_mapping.py
+touch src/$PROJECT_NAME/components/stage_05_model_training.py
 
-    # Create file if not exists or empty
-    if [[ ! -f "$filepath" || ! -s "$filepath" ]]; then
-        touch "$filepath"
-        echo "Creating empty file: $filepath"
-    else
-        echo "$filename already exists"
-    fi
+# Pipeline
+touch src/$PROJECT_NAME/pipeline/__init__.py
+touch src/$PROJECT_NAME/pipeline/training_pipeline.py
 
-done
+# Entity
+touch src/$PROJECT_NAME/entity/__init__.py
+touch src/$PROJECT_NAME/entity/config_entity.py
+touch src/$PROJECT_NAME/entity/artifact_entity.py
 
-echo "All files and directories created!"
+# Utils
+touch src/$PROJECT_NAME/utils/__init__.py
+touch src/$PROJECT_NAME/utils/utils.py
+
+# Config
+touch src/$PROJECT_NAME/config/__init__.py
+touch src/$PROJECT_NAME/config/configuration.py
+
+# Constants
+touch src/$PROJECT_NAME/constants/__init__.py
+touch src/$PROJECT_NAME/constants/constants.py
+
+# Logger
+touch src/$PROJECT_NAME/logger/__init__.py
+touch src/$PROJECT_NAME/logger/log.py
+
+# Exception handling
+touch src/$PROJECT_NAME/exception/__init__.py
+touch src/$PROJECT_NAME/exception/exception_handler.py
+
+# Data directories
+mkdir -p data/{raw,processed}
+
+# Config & pipeline support files
+mkdir -p config
+touch config/config.yaml
+touch params.yaml
+touch dvc.yaml
+
+# App & setup
+touch app.py
+touch setup.py
+touch requirements.txt
+touch README.md
+
+# Research & templates
+mkdir -p research
+touch research/trials.py
+
+mkdir -p templates
+touch templates/index.html
+
+echo "VulnGuard-AI project structure created successfully!"

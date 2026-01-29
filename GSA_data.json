@@ -1,0 +1,2216 @@
+{
+    "data": {
+        "securityAdvisories": {
+            "nodes": [
+                {
+                    "summary": "Duplicate Advisory: ProsemirrorToHtml has a Cross-Site Scripting (XSS) vulnerability through unescaped HTML attribute values",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-4249-gjr8-jpq3"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 0.2.1",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.2.1"
+                                },
+                                "package": {
+                                    "name": "prosemirror_to_html"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/etaminstudio/prosemirror_to_html/security/advisories/GHSA-52c5-vh7f-26fx"
+                        },
+                        {
+                            "url": "https://github.com/etaminstudio/prosemirror_to_html/commit/4d59f94f550bcabeec30d298791bbdd883298ad8"
+                        },
+                        {
+                            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+                        },
+                        {
+                            "url": "https://github.com/etaminstudio/prosemirror_to_html/blob/ea8beb32f6c37f29f042ba4155ccf18504da716e/lib/prosemirror_to_html.rb#L249"
+                        },
+                        {
+                            "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/prosemirror_to_html/GHSA-vfpf-xmwh-8m65.yml"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-4249-gjr8-jpq3"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Data races in ticketed_lock",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-gq4h-f254-7cw9"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 0.3.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.3.0"
+                                },
+                                "package": {
+                                    "name": "ticketed_lock"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/kvark/ticketed_lock/issues/7"
+                        },
+                        {
+                            "url": "https://rustsec.org/advisories/RUSTSEC-2020-0119.html"
+                        },
+                        {
+                            "url": "https://github.com/kvark/ticketed_lock/commit/a986a9335d591fa5c826157d1674d47aa525357f"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-gq4h-f254-7cw9"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: terminal42/contao-tablelookupwizard possible SQL injection in widget field value",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-7fpj-wc8v-9cgc"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": ">= 1.0.0, < 3.3.5",
+                                "firstPatchedVersion": {
+                                    "identifier": "3.3.5"
+                                },
+                                "package": {
+                                    "name": "terminal42/contao-tablelookupwizard"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/terminal42/contao-tablelookupwizard/security/advisories/GHSA-v3mr-gp7j-pw5w"
+                        },
+                        {
+                            "url": "https://github.com/terminal42/contao-tablelookupwizard/commit/a5e723a28f110b7df8ffc4175cef9b061d3cc717"
+                        },
+                        {
+                            "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/terminal42/contao-tablelookupwizard/2022-02-04-1.yaml"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-7fpj-wc8v-9cgc"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: SimpleSAMLphp signature validation bypass",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-fjr2-r2mp-484p"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": ">= 1.12.0, < 1.14.17",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.14.17"
+                                },
+                                "package": {
+                                    "name": "simplesamlphp/simplesamlphp"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/simplesamlphp/simplesamlphp/commit/e2d53086abbb253efb24ddcb49b116246eb0b6ca"
+                        },
+                        {
+                            "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/simplesamlphp/simplesamlphp/201710-01.yaml"
+                        },
+                        {
+                            "url": "https://simplesamlphp.org/security/201710-01"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-fjr2-r2mp-484p"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Data races on syncpool",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-r88h-6987-g79f"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 0.1.6",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.1.6"
+                                },
+                                "package": {
+                                    "name": "syncpool"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/Chopinsky/byte_buffer/issues/2"
+                        },
+                        {
+                            "url": "https://github.com/RustSec/advisory-db/blob/main/crates/syncpool/RUSTSEC-2020-0142.md"
+                        },
+                        {
+                            "url": "https://rustsec.org/advisories/RUSTSEC-2020-0142.html"
+                        },
+                        {
+                            "url": "https://github.com/Chopinsky/byte_buffer/commit/15b282877d1e576de2b337d8162bbf43ed1a0f2d"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-r88h-6987-g79f"
+                        }
+                    ]
+                },
+                {
+                    "summary": "RandomAlphaNumeric and CryptoRandomAlphaNumeric are not as random as they should be",
+                    "severity": "LOW",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-xg2h-wx96-xgxr"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2021-4238"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.1.1",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.1.1"
+                                },
+                                "package": {
+                                    "name": "github.com/Masterminds/goutils"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/Masterminds/goutils/security/advisories/GHSA-xg2h-wx96-xgxr"
+                        },
+                        {
+                            "url": "https://github.com/Masterminds/goutils/commit/f1923532a168b8203bfe956d8cd3b17ebece5982"
+                        },
+                        {
+                            "url": "https://github.com/Masterminds/goutils/releases/tag/v1.1.1"
+                        },
+                        {
+                            "url": "https://github.com/Masterminds/goutils/commit/869801f20f9f1e7ecdbdb6422049d8241270d5e1"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-4238"
+                        },
+                        {
+                            "url": "https://pkg.go.dev/vuln/GO-2022-0411"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-xg2h-wx96-xgxr"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: GoUtils's randomly-generated alphanumeric strings contain significantly less entropy than expected",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-3839-6r69-m497"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.1.1",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.1.1"
+                                },
+                                "package": {
+                                    "name": "github.com/Masterminds/goutils"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-4238"
+                        },
+                        {
+                            "url": "https://github.com/Masterminds/goutils/commit/869801f20f9f1e7ecdbdb6422049d8241270d5e1"
+                        },
+                        {
+                            "url": "https://pkg.go.dev/vuln/GO-2022-0411"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-3839-6r69-m497"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Command Injection in fs-git",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-qr32-j4j6-3m7r"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2017-16087"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.0.2",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.0.2"
+                                },
+                                "package": {
+                                    "name": "fs-git"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/vvakame/fs-git/commit/eb5f70efa5cfbff1ab299fa7daaa5de549243998"
+                        },
+                        {
+                            "url": "https://github.com/vvakame/fs-git/commit/eb5f70efa5cfbff1ab299fa7daaa5de549243998#diff-13b5b151431c7e7a17f273559ed212d5"
+                        },
+                        {
+                            "url": "https://www.npmjs.com/advisories/360"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2017-16087"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-qr32-j4j6-3m7r"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Command Injection in node-rules",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-8whr-v3gm-w8h9"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 5.0.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "5.0.0"
+                                },
+                                "package": {
+                                    "name": "node-rules"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/mithunsatheesh/node-rules/issues/84"
+                        },
+                        {
+                            "url": "https://snyk.io/vuln/SNYK-JS-NODERULES-560426"
+                        },
+                        {
+                            "url": "https://github.com/mithunsatheesh/node-rules/commit/100862223904bb6478fcc33b701c7dee11f7b832"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-8whr-v3gm-w8h9"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Improper Verification of Cryptographic Signature",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-7r96-8g3x-g36m"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2021-32685"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 7.0.3",
+                                "firstPatchedVersion": {
+                                    "identifier": "7.0.3"
+                                },
+                                "package": {
+                                    "name": "tenvoy"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/TogaTech/tEnvoy/security/advisories/GHSA-7r96-8g3x-g36m"
+                        },
+                        {
+                            "url": "https://github.com/TogaTech/tEnvoy/commit/a121b34a45e289d775c62e58841522891dee686b"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-32685"
+                        },
+                        {
+                            "url": "https://github.com/TogaTech/tEnvoy/releases/tag/v7.0.3"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-7r96-8g3x-g36m"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Improper Verification of Cryptographic Signature",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-5w25-hxp5-h8c9"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 7.0.3",
+                                "firstPatchedVersion": {
+                                    "identifier": "7.0.3"
+                                },
+                                "package": {
+                                    "name": "tenvoy"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/TogaTech/tEnvoy/security/advisories/GHSA-7r96-8g3x-g36m"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-32685"
+                        },
+                        {
+                            "url": "https://github.com/TogaTech/tEnvoy/commit/a121b34a45e289d775c62e58841522891dee686b"
+                        },
+                        {
+                            "url": "https://github.com/TogaTech/tEnvoy/releases/tag/v7.0.3"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-5w25-hxp5-h8c9"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Path Traversal in the Logs plugin for Craft CMS",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-9chx-2vqw-8vq5"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2022-23409"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 3.0.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "3.0.4"
+                                },
+                                "package": {
+                                    "name": "ether/logs"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-23409"
+                        },
+                        {
+                            "url": "https://plugins.craftcms.com/logs"
+                        },
+                        {
+                            "url": "http://packetstormsecurity.com/files/165706/Ethercreative-Logs-3.0.3-Path-Traversal.html"
+                        },
+                        {
+                            "url": "https://github.com/ethercreative/logs/commit/eb225cc78b1123a10ce2784790f232d71c2066c4"
+                        },
+                        {
+                            "url": "https://sec-consult.com/vulnerability-lab"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-9chx-2vqw-8vq5"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Websocket requests did not call AuthenticateMethod",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-5gjg-jgh4-gppm"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2021-4236"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": ">= 1.4.0, < 1.5.2",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.5.2"
+                                },
+                                "package": {
+                                    "name": "github.com/ecnepsnai/web"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/ecnepsnai/web/security/advisories/GHSA-5gjg-jgh4-gppm"
+                        },
+                        {
+                            "url": "https://github.com/ecnepsnai/web/commit/5a78f8d5c41ce60dcf9f61aaf47a7a8dc3e0002f"
+                        },
+                        {
+                            "url": "https://pkg.go.dev/vuln/GO-2021-0107"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-4236"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-5gjg-jgh4-gppm"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: ecnepsnai/web vulnerable to Uncontrolled Resource Consumption",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-jpgg-cp2x-qrw3"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": ">= 1.4.0, < 1.5.2",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.5.2"
+                                },
+                                "package": {
+                                    "name": "github.com/ecnepsnai/web"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-4236"
+                        },
+                        {
+                            "url": "https://github.com/ecnepsnai/web/commit/5a78f8d5c41ce60dcf9f61aaf47a7a8dc3e0002f"
+                        },
+                        {
+                            "url": "https://pkg.go.dev/vuln/GO-2021-0107"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-jpgg-cp2x-qrw3"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Svix vulnerable to improper comparison of different-length signatures",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-w277-wpqf-rcfv"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.17.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.17.0"
+                                },
+                                "package": {
+                                    "name": "svix"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/svix/svix-webhooks/pull/1190"
+                        },
+                        {
+                            "url": "https://github.com/svix/svix-webhooks/commit/958821bd3b956d1436af65f70a0964d4ffb7daf6"
+                        },
+                        {
+                            "url": "https://rustsec.org/advisories/RUSTSEC-2024-0010.html"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-w277-wpqf-rcfv"
+                        }
+                    ]
+                },
+                {
+                    "summary": "ipld/go-codec-dagpb panics when processing certain blocks",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-g3vv-g2j5-45f2"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2022-2584"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.3.1",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.3.1"
+                                },
+                                "package": {
+                                    "name": "github.com/ipld/go-codec-dagpb"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/ipld/go-codec-dagpb/security/advisories/GHSA-g3vv-g2j5-45f2"
+                        },
+                        {
+                            "url": "https://github.com/ipld/go-codec-dagpb/commit/a17ace35cc760a2698645c09868f9050fa219f57"
+                        },
+                        {
+                            "url": "https://pkg.go.dev/vuln/GO-2022-0422"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-2584"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-g3vv-g2j5-45f2"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: go-codec-dagpb vulnerable to panic when decoding invalid blocks",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-967g-cjx4-h7j6"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.3.1",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.3.1"
+                                },
+                                "package": {
+                                    "name": "github.com/ipld/go-codec-dagpb"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-2584"
+                        },
+                        {
+                            "url": "https://github.com/ipld/go-codec-dagpb/commit/a17ace35cc760a2698645c09868f9050fa219f57"
+                        },
+                        {
+                            "url": "https://pkg.go.dev/vuln/GO-2022-0422"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-967g-cjx4-h7j6"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Panic mishandled in libpulse-binding",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-xvcg-2q82-r87j"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2019-25055"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 2.6.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "2.6.0"
+                                },
+                                "package": {
+                                    "name": "libpulse-binding"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2019-25055"
+                        },
+                        {
+                            "url": "https://raw.githubusercontent.com/rustsec/advisory-db/main/crates/libpulse-binding/RUSTSEC-2019-0038.md"
+                        },
+                        {
+                            "url": "https://rustsec.org/advisories/RUSTSEC-2019-0038.html"
+                        },
+                        {
+                            "url": "https://github.com/jnqnfe/pulse-binding-rust/commit/7fd282aef7787577c385aed88cb25d004b85f494"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-xvcg-2q82-r87j"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Uncaught Exception in libpulse-binding",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-wcxc-jf6c-8rx9"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 2.6.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "2.6.0"
+                                },
+                                "package": {
+                                    "name": "libpulse-binding"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/jnqnfe/pulse-binding-rust/commit/7fd282aef7787577c385aed88cb25d004b85f494"
+                        },
+                        {
+                            "url": "https://rustsec.org/advisories/RUSTSEC-2019-0038.html"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-wcxc-jf6c-8rx9"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Duplicate Advisory: Command injection in Weblate",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-h2g5-2rhx-ffgj"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2022-24727"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 4.11.1",
+                                "firstPatchedVersion": {
+                                    "identifier": "4.11.1"
+                                },
+                                "package": {
+                                    "name": "Weblate"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/WeblateOrg/weblate/security/advisories/GHSA-3872-f48p-pxqj"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-24727"
+                        },
+                        {
+                            "url": "https://github.com/WeblateOrg/weblate/commit/35d59f1f040541c358cece0a8d4a63183ca919b8"
+                        },
+                        {
+                            "url": "https://github.com/WeblateOrg/weblate/commit/d83672a3e7415da1490334e2c9431e5da1966842"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-h2g5-2rhx-ffgj"
+                        }
+                    ]
+                },
+                {
+                    "summary": "RustCrypto Utilities cmov: `thumbv6m-none-eabi` compiler emits non-constant time assembly when using `cmovnz`",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-2gqc-6j2q-83qp"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-23519"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 0.4.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.4.4"
+                                },
+                                "package": {
+                                    "name": "cmov"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/RustCrypto/utils/security/advisories/GHSA-2gqc-6j2q-83qp"
+                        },
+                        {
+                            "url": "https://github.com/RustCrypto/utils/commit/55977257e7c82a309d5e8abfdd380a774f0f9778"
+                        },
+                        {
+                            "url": "https://rustsec.org/advisories/RUSTSEC-2026-0003.html"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-23519"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-2gqc-6j2q-83qp"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Cross-Site Scripting (XSS) vulnerability through unescaped HTML attribute values",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-52c5-vh7f-26fx"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-64501"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 0.2.1",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.2.1"
+                                },
+                                "package": {
+                                    "name": "prosemirror_to_html"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/etaminstudio/prosemirror_to_html/security/advisories/GHSA-52c5-vh7f-26fx"
+                        },
+                        {
+                            "url": "https://github.com/etaminstudio/prosemirror_to_html/commit/4d59f94f550bcabeec30d298791bbdd883298ad8"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-64501"
+                        },
+                        {
+                            "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/prosemirror_to_html/CVE-2025-64501.yml"
+                        },
+                        {
+                            "url": "https://github.com/etaminstudio/prosemirror_to_html/blob/ea8beb32f6c37f29f042ba4155ccf18504da716e/lib/prosemirror_to_html.rb#L249"
+                        },
+                        {
+                            "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/prosemirror_to_html/GHSA-vfpf-xmwh-8m65.yml"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-52c5-vh7f-26fx"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Possible SQL injection in tablelookupwizard Contao Extension",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-v3mr-gp7j-pw5w"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 3.3.5",
+                                "firstPatchedVersion": {
+                                    "identifier": "3.3.5"
+                                },
+                                "package": {
+                                    "name": "terminal42/contao-tablelookupwizard"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/terminal42/contao-tablelookupwizard/security/advisories/GHSA-v3mr-gp7j-pw5w"
+                        },
+                        {
+                            "url": "https://github.com/terminal42/contao-tablelookupwizard/commit/a5e723a28f110b7df8ffc4175cef9b061d3cc717"
+                        },
+                        {
+                            "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/terminal42/contao-tablelookupwizard/2022-02-04-1.yaml"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-v3mr-gp7j-pw5w"
+                        }
+                    ]
+                },
+                {
+                    "summary": "phpMyFAQ: Public API endpoints expose emails and invisible questions",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-j4rc-96xj-gvqc"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-24422"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "<= 4.0.16",
+                                "firstPatchedVersion": {
+                                    "identifier": "4.0.17"
+                                },
+                                "package": {
+                                    "name": "thorsten/phpmyfaq"
+                                }
+                            },
+                            {
+                                "vulnerableVersionRange": "<= 4.0.16",
+                                "firstPatchedVersion": {
+                                    "identifier": "4.0.17"
+                                },
+                                "package": {
+                                    "name": "phpmyfaq/phpmyfaq"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-j4rc-96xj-gvqc"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-j4rc-96xj-gvqc"
+                        }
+                    ]
+                },
+                {
+                    "summary": "phpMyFAQ: /api/setup/backup accessible to any authenticated user (authz missing)",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-wm8h-26fv-mg7g"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-24421"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "<= 4.0.16",
+                                "firstPatchedVersion": {
+                                    "identifier": "4.0.17"
+                                },
+                                "package": {
+                                    "name": "thorsten/phpmyfaq"
+                                }
+                            },
+                            {
+                                "vulnerableVersionRange": "<= 4.0.16",
+                                "firstPatchedVersion": {
+                                    "identifier": "4.0.17"
+                                },
+                                "package": {
+                                    "name": "phpmyfaq/phpmyfaq"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-wm8h-26fv-mg7g"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-wm8h-26fv-mg7g"
+                        }
+                    ]
+                },
+                {
+                    "summary": "phpMyFAQ: Attachment download allowed without dlattachment right (broken access control)",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-7p9h-m7m8-vhhv"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-24420"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "<= 4.0.16",
+                                "firstPatchedVersion": {
+                                    "identifier": "4.0.17"
+                                },
+                                "package": {
+                                    "name": "thorsten/phpmyfaq"
+                                }
+                            },
+                            {
+                                "vulnerableVersionRange": "<= 4.0.16",
+                                "firstPatchedVersion": {
+                                    "identifier": "4.0.17"
+                                },
+                                "package": {
+                                    "name": "phpmyfaq/phpmyfaq"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/thorsten/phpMyFAQ/security/advisories/GHSA-7p9h-m7m8-vhhv"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-7p9h-m7m8-vhhv"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Code Injection in node-rules",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-f78f-353m-cf4j"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2020-7609"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": ">= 3.0.0, < 5.0.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "5.0.0"
+                                },
+                                "package": {
+                                    "name": "node-rules"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-7609"
+                        },
+                        {
+                            "url": "https://github.com/mithunsatheesh/node-rules/commit/100862223904bb6478fcc33b701c7dee11f7b832"
+                        },
+                        {
+                            "url": "https://snyk.io/vuln/SNYK-JS-NODERULES-560426"
+                        },
+                        {
+                            "url": "https://github.com/mithunsatheesh/node-rules/issues/84"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-f78f-353m-cf4j"
+                        }
+                    ]
+                },
+                {
+                    "summary": "LavaLite CMS affected by a stored cross-site scripting vulnerability",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-w7rq-fgx4-4xcm"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-71177"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "<= 10.1.0",
+                                "firstPatchedVersion": null,
+                                "package": {
+                                    "name": "lavalite/cms"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-71177"
+                        },
+                        {
+                            "url": "https://github.com/LavaLite/cms/issues/420"
+                        },
+                        {
+                            "url": "https://lavalite.org"
+                        },
+                        {
+                            "url": "https://www.vulncheck.com/advisories/lavalite-cms-stored-xss-via-package-creation-and-search"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-w7rq-fgx4-4xcm"
+                        }
+                    ]
+                },
+                {
+                    "summary": "miniserve affected by a TOCTOU and symlink race vulnerability",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-mxc8-4jqf-368q"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-67124"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 0.32.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.32.0"
+                                },
+                                "package": {
+                                    "name": "miniserve"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-67124"
+                        },
+                        {
+                            "url": "https://gist.github.com/thesmartshadow/55688f87f8b985eb530e07d00ef8c63f"
+                        },
+                        {
+                            "url": "https://github.com/svenstaro/miniserve"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-mxc8-4jqf-368q"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea does not properly validate ownership when toggling OpenID URI visibility",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-qqgv-v353-cv8p"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-20904"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "github.com/go-gitea/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-20904"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36346"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36361"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/commit/ed5720af2ac94d74f822721c05b42b6148ff9c22"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-qqgv-v353-cv8p"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea does not properly validate repository ownership when linking attachments to releases",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-4xx9-vc8v-87hv"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-20912"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "github.com/go-gitea/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-20912"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36320"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36355"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/commit/fbea2c68e8df11cfa94e8ead913b79946780ed30"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-4xx9-vc8v-87hv"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea does not properly validate repository ownership when deleting Git LFS locks",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-393c-qgvj-3xph"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-20897"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "github.com/go-gitea/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-20897"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36344"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36349"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/commit/da036f3f35ca830b22cf4480912ed261303b798f"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-393c-qgvj-3xph"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea does not properly verify authorization when canceling scheduled auto-merges via the web interface",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-9cgq-wp42-4rpq"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-20888"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "github.com/go-gitea/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-20888"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36341"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36356"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-9cgq-wp42-4rpq"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea does not properly validate project ownership in organization project operations",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-rw22-5hhq-pfpf"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-20750"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "github.com/go-gitea/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-20750"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36318"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36373"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/commit/7b5de594cd92e30b9c3d40ffda119acad794cc64"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-rw22-5hhq-pfpf"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea improperly exposes issue titles and repository names through previously started stopwatches",
+                    "severity": "LOW",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-j8xr-c56q-m8jj"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-20883"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "github.com/go-gitea/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-20883"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36340"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36368"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/commit/95ea2df00a70176c516b12f3cfee8c84a310280f"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-j8xr-c56q-m8jj"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea improperly exposes issue and pull request titles",
+                    "severity": "LOW",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-2vgv-hgv4-22mh"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-20800"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "github.com/go-gitea/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-20800"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36339"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/commit/67e75f30a83d2523cedc37ad7b03bcba66947833"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-2vgv-hgv4-22mh"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea has improper access control for uploaded attachments",
+                    "severity": "LOW",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-hgr3-x44x-33hx"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-20736"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "code.gitea.io/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-20736"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36320"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/commit/fbea2c68e8df11cfa94e8ead913b79946780ed30"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-hgr3-x44x-33hx"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Gitea may send release notification emails for private repositories to users whose access has been revoked",
+                    "severity": "LOW",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-8fwc-qjw5-rvgp"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-0798"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 1.25.4",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.25.4"
+                                },
+                                "package": {
+                                    "name": "code.gitea.io/gitea"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-0798"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/pull/36319"
+                        },
+                        {
+                            "url": "https://blog.gitea.com/release-of-1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/go-gitea/gitea/releases/tag/v1.25.4"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-8fwc-qjw5-rvgp"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Open Redirect in url-parse",
+                    "severity": "CRITICAL",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-pv4c-p2j5-38j4"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2018-3774"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": ">= 1.0.0, < 1.4.3",
+                                "firstPatchedVersion": {
+                                    "identifier": "1.4.3"
+                                },
+                                "package": {
+                                    "name": "url-parse"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2018-3774"
+                        },
+                        {
+                            "url": "https://github.com/unshiftio/url-parse/commit/53b1794e54d0711ceb52505e0f74145270570d5a"
+                        },
+                        {
+                            "url": "https://hackerone.com/reports/384029"
+                        },
+                        {
+                            "url": "https://github.com/unshiftio/url-parse/commit/d7b582ec1243e8024e60ac0b62d2569c939ef5de"
+                        },
+                        {
+                            "url": "https://github.com/unshiftio/url-parse/commit/209c296d302317268afbe19700a70c63ecbeb2d2"
+                        },
+                        {
+                            "url": "https://github.com/unshiftio/url-parse/compare/0.2.3...1.0.0"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-pv4c-p2j5-38j4"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Livewire Filemanager does not restrict uploaded file types",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-9g95-48c6-r778"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-14894"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "<= 1.0.4",
+                                "firstPatchedVersion": null,
+                                "package": {
+                                    "name": "livewire-filemanager/filemanager"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-14894"
+                        },
+                        {
+                            "url": "https://github.com/livewire-filemanager/filemanager"
+                        },
+                        {
+                            "url": "https://hackingbydoing.wixsite.com/hackingbydoing/post/unauthenticated-rce-in-livewire-filemanager"
+                        },
+                        {
+                            "url": "https://www.kb.cert.org/vuls/id/650657"
+                        },
+                        {
+                            "url": "https://github.com/livewire-filemanager/filemanager/blob/master/docs.md#security"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-9g95-48c6-r778"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Wheel Affected by Arbitrary File Permission Modification via Path Traversal in wheel unpack",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-8rrh-rw8j-w5fx"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-24049"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": ">= 0.40.0, <= 0.46.1",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.46.2"
+                                },
+                                "package": {
+                                    "name": "wheel"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/pypa/wheel/security/advisories/GHSA-8rrh-rw8j-w5fx"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-24049"
+                        },
+                        {
+                            "url": "https://github.com/pypa/wheel/commit/7a7d2de96b22a9adf9208afcc9547e1001569fef"
+                        },
+                        {
+                            "url": "https://github.com/pypa/wheel/releases/tag/0.46.2"
+                        },
+                        {
+                            "url": "https://github.com/pypa/wheel/commit/934fe177ff912c8e03d5ae951d3805e1fd90ba5e"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-8rrh-rw8j-w5fx"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Timing Attack Vulnerability in SCRAM Authentication",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-3wfh-36rx-9537"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-59432"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 3.2",
+                                "firstPatchedVersion": {
+                                    "identifier": "3.2"
+                                },
+                                "package": {
+                                    "name": "com.ongres.scram:scram-common"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/ongres/scram/security/advisories/GHSA-3wfh-36rx-9537"
+                        },
+                        {
+                            "url": "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte%5B%5D,byte%5B%5D)"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-59432"
+                        },
+                        {
+                            "url": "https://github.com/ongres/scram/commit/e0b0cf99f05406a0d26682c72fcb5728e95124b3"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-3wfh-36rx-9537"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Minio Operator uses Kubernetes apiserver audience for AssumeRoleWithWebIdentity STS",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-7m6v-q233-q9j9"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-32963"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 7.1.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "7.1.0"
+                                },
+                                "package": {
+                                    "name": "github.com/minio/operator"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/minio/operator/security/advisories/GHSA-7m6v-q233-q9j9"
+                        },
+                        {
+                            "url": "https://github.com/minio/operator/releases/tag/v7.1.0"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-32963"
+                        },
+                        {
+                            "url": "https://github.com/minio/operator/commit/d586294d526bf0d8e6097225114655f68b0adcc5"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-7m6v-q233-q9j9"
+                        }
+                    ]
+                },
+                {
+                    "summary": "gitoxide does not detect SHA-1 collision attacks",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-2frx-2596-x5r6"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-31130"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 0.18.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.18.0"
+                                },
+                                "package": {
+                                    "name": "gix-worktree-state"
+                                }
+                            },
+                            {
+                                "vulnerableVersionRange": "< 0.40.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.40.0"
+                                },
+                                "package": {
+                                    "name": "gix-worktree"
+                                }
+                            },
+                            {
+                                "vulnerableVersionRange": "< 0.45.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.45.0"
+                                },
+                                "package": {
+                                    "name": "gix-traverse"
+                                }
+                            },
+                            {
+                                "vulnerableVersionRange": "< 0.18.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.18.0"
+                                },
+                                "package": {
+                                    "name": "gix-status"
+                                }
+                            },
+                            {
+                                "vulnerableVersionRange": "< 0.19.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.19.0"
+                                },
+                                "package": {
+                                    "name": "gix-revwalk"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/GitoxideLabs/gitoxide/security/advisories/GHSA-2frx-2596-x5r6"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-31130"
+                        },
+                        {
+                            "url": "https://rustsec.org/advisories/RUSTSEC-2025-0021.html"
+                        },
+                        {
+                            "url": "https://github.com/GitoxideLabs/gitoxide/commit/f253f02a6658b3b7612a50d56c71f5ae4da4ca21"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-2frx-2596-x5r6"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Distribution's token authentication allows to inject an untrusted signing key in a JWT",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-phw4-mc57-4hwc"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-24976"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "> 3.0.0-beta.1, < 3.0.0-rc.3",
+                                "firstPatchedVersion": {
+                                    "identifier": "3.0.0-rc.3"
+                                },
+                                "package": {
+                                    "name": "github.com/distribution/distribution/v3"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/distribution/distribution/security/advisories/GHSA-phw4-mc57-4hwc"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-24976"
+                        },
+                        {
+                            "url": "https://github.com/distribution/distribution/commit/f4a500caf68169dccb0b54cb90523e68ee1ac2be"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-phw4-mc57-4hwc"
+                        }
+                    ]
+                },
+                {
+                    "summary": "protobuf affected by a JSON recursion depth bypass",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-7gcm-g887-7qv7"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-0994"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "<= 6.33.4",
+                                "firstPatchedVersion": null,
+                                "package": {
+                                    "name": "protobuf"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-0994"
+                        },
+                        {
+                            "url": "https://github.com/protocolbuffers/protobuf/pull/25239"
+                        },
+                        {
+                            "url": "https://github.com/protocolbuffers/protobuf/issues/25070"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-7gcm-g887-7qv7"
+                        }
+                    ]
+                },
+                {
+                    "summary": "CometBFT has inconsistencies between how commit signatures are verified and how block time is derived",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-c32p-wcqj-j677"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "<= 0.37.17",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.37.18"
+                                },
+                                "package": {
+                                    "name": "github.com/cometbft/cometbft"
+                                }
+                            },
+                            {
+                                "vulnerableVersionRange": ">= 0.38.0-alpha.1, <= 0.38.20",
+                                "firstPatchedVersion": {
+                                    "identifier": "0.38.21"
+                                },
+                                "package": {
+                                    "name": "github.com/cometbft/cometbft"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/cometbft/cometbft/security/advisories/GHSA-c32p-wcqj-j677"
+                        },
+                        {
+                            "url": "https://github.com/cometbft/cometbft/commit/bf8274fcdbcab2bc652660ae627196a90a6efb97"
+                        },
+                        {
+                            "url": "https://github.com/cometbft/cometbft/releases/tag/v0.37.18"
+                        },
+                        {
+                            "url": "https://github.com/cometbft/cometbft/releases/tag/v0.38.21"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-c32p-wcqj-j677"
+                        }
+                    ]
+                },
+                {
+                    "summary": "orjson does not limit recursion for deeply nested JSON documents",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-hx9q-6w63-j58v"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-67221"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "<= 3.11.4",
+                                "firstPatchedVersion": null,
+                                "package": {
+                                    "name": "orjson"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-67221"
+                        },
+                        {
+                            "url": "https://github.com/ijl/orjson"
+                        },
+                        {
+                            "url": "https://github.com/kpatsakis/orjson_vulnerability"
+                        },
+                        {
+                            "url": "https://github.com/ijl/orjson/issues/620"
+                        },
+                        {
+                            "url": "https://github.com/kpatsakis/CVE-2025-67221/issues/1"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-hx9q-6w63-j58v"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Bokeh server applications have Incomplete Origin Validation in WebSockets",
+                    "severity": "MODERATE",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-793v-589g-574v"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2026-21883"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 3.8.2",
+                                "firstPatchedVersion": {
+                                    "identifier": "3.8.2"
+                                },
+                                "package": {
+                                    "name": "bokeh"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/bokeh/bokeh/security/advisories/GHSA-793v-589g-574v"
+                        },
+                        {
+                            "url": "https://github.com/bokeh/bokeh/commit/cedd113b0e271b439dce768671685cf5f861812e"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-21883"
+                        },
+                        {
+                            "url": "https://aydinnyunus.github.io/2026/01/24/bokeh-websocket-hijacking-cve-2026-21883"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-793v-589g-574v"
+                        }
+                    ]
+                },
+                {
+                    "summary": "Jupyter Core on Windows Has Uncontrolled Search Path Element Local Privilege Escalation Vulnerability",
+                    "severity": "HIGH",
+                    "identifiers": [
+                        {
+                            "type": "GHSA",
+                            "value": "GHSA-33p9-3p43-82vq"
+                        },
+                        {
+                            "type": "CVE",
+                            "value": "CVE-2025-30167"
+                        }
+                    ],
+                    "vulnerabilities": {
+                        "nodes": [
+                            {
+                                "vulnerableVersionRange": "< 5.8.0",
+                                "firstPatchedVersion": {
+                                    "identifier": "5.8.1"
+                                },
+                                "package": {
+                                    "name": "jupyter_core"
+                                }
+                            }
+                        ]
+                    },
+                    "references": [
+                        {
+                            "url": "https://github.com/jupyter/jupyter_core/security/advisories/GHSA-33p9-3p43-82vq"
+                        },
+                        {
+                            "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-30167"
+                        },
+                        {
+                            "url": "https://github.com/jupyter/jupyter_core/commit/5e8965600adda6b416692ce7e85ecb2bd814bd52"
+                        },
+                        {
+                            "url": "https://github.com/advisories/GHSA-33p9-3p43-82vq"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
