@@ -5,6 +5,7 @@ from pathlib import Path
 from stage_03_schema import CVE, GSA, MITRE
 from stage_03_schema import HasGSAAdvisory, MapsToMITRE
 from stage_03_schema import init_graph
+from VULNADO.config.configuration import get_config
 
 
 def ingest_cves(path: str):
@@ -79,11 +80,9 @@ def ingest_cve_mitre(path: str):
 
     MapsToMITRE.merge_records(records)
 
-BASE_PATH = Path("/Users/abhipsa/Documents/VulnGuard AI/normalized")
-# OUTPUT_PATH = Path("/Users/abhipsa/Documents/VulnGuard AI/enitity_chunks")
-# entity_chunks_path= OUTPUT_PATH / "entity_chunks.json"
+config = get_config()
+BASE_PATH = Path(config.data.normalized_dir)
 
-# OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
 def main():
     init_graph()
     ingest_cves(BASE_PATH/"cve_core_fields.json")

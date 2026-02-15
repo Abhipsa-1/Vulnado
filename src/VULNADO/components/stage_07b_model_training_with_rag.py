@@ -11,11 +11,16 @@ from pathlib import Path
 from typing import Dict, List, Optional
 import traceback
 from datetime import datetime
+from VULNADO.config.configuration import get_config
 
 # ==================== Logging Setup ====================
 
-def setup_logging(log_dir: str = "/Users/abhipsa/Documents/VulnGuard AI/logs") -> logging.Logger:
+def setup_logging(log_dir: str = None) -> logging.Logger:
     """Setup comprehensive logging for model training"""
+    if log_dir is None:
+        config = get_config()
+        log_dir = config.logging.log_dir
+    
     Path(log_dir).mkdir(parents=True, exist_ok=True)
     
     logger = logging.getLogger("stage_07b_llama_training")
@@ -61,6 +66,7 @@ MODEL_CONFIG = {
     'vocab_size': 128256,
 }
 
+config = get_config()
 TRAINING_CONFIG = {
     'batch_size': 8,
     'learning_rate': 1e-5,
@@ -70,7 +76,7 @@ TRAINING_CONFIG = {
     'max_seq_length': 2048,
     'save_steps': 500,
     'eval_steps': 500,
-    'output_dir': '/Users/abhipsa/Documents/VulnGuard AI/models/llama_finetuned'
+    'output_dir': config.models.llama_finetuned_dir
 }
 
 RAG_CONFIG = {
@@ -251,16 +257,18 @@ def augment_training_data_with_rag(samples: List[Dict]) -> List[Dict]:
     
     try:
         # Import RAG module
-        sys.path.insert(0, '/Users/abhipsa/Documents/VulnGuard AI/src')
+        config = get_config()
+        sys.path.insert(0, config.project.src_dir)
         from VULNGUARD_AI.components.stage_05_rag_system import (
             Neo4jRAGRetriever, EmbeddingService, RAGContextGenerator
         )
         
         # Initialize RAG components
+        neo4j_config = config.neo4j_service
         neo4j_retriever = Neo4jRAGRetriever(
-            neo4j_uri="neo4j://localhost:7687",
-            neo4j_username="neo4j",
-            neo4j_password="testpassword"
+            neo4j_uri=neo4j_config.uri,
+            neo4j_username=neo4j_config.username,
+            neo4j_password=neo4j_config.password
         )
         
         if not neo4j_retriever.connect():
@@ -539,7 +547,8 @@ def main():
         
         # Step 3: Prepare fine-tuning with RAG
         logger.info("\nStep 3: Preparing fine-tuning pipeline with RAG...")
-        training_data_file = "/Users/abhipsa/Documents/VulnGuard AI/training_data/training_dataset.jsonl"
+        config = get_config()
+        training_data_file = config.models.training_dataset_file
         
         if not Path(training_data_file).exists():
             logger.error(f"Training data file not found: {training_data_file}")

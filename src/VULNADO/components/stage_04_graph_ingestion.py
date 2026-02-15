@@ -12,11 +12,16 @@ from typing import Dict, List, Optional, Tuple
 from neo4j import GraphDatabase
 import traceback
 from datetime import datetime
+from VULNADO.config.configuration import get_config
 
 # ==================== Logging Setup ====================
 
-def setup_logging(log_dir: str = "/Users/abhipsa/Documents/VulnGuard AI/logs") -> logging.Logger:
+def setup_logging(log_dir: str = None) -> logging.Logger:
     """Setup comprehensive logging for the data fetching process"""
+    if log_dir is None:
+        config = get_config()
+        log_dir = config.logging.log_dir
+    
     # Create logs directory if it doesn't exist
     Path(log_dir).mkdir(parents=True, exist_ok=True)
     
@@ -293,7 +298,7 @@ def fetch_relationships(neo4j_handler: Neo4jConnectionHandler) -> Tuple[List[Dic
 
 # ==================== Data Saving Functions ====================
 
-def save_data_to_file(data: Dict, output_dir: str = "/Users/abhipsa/Documents/VulnGuard AI/training_data") -> bool:
+def save_data_to_file(data: Dict, output_dir: str = None) -> bool:
     """Save fetched data to JSON files
     
     Args:
@@ -303,6 +308,9 @@ def save_data_to_file(data: Dict, output_dir: str = "/Users/abhipsa/Documents/Vu
     Returns:
         bool: True if successful, False otherwise
     """
+    if output_dir is None:
+        config = get_config()
+        output_dir = config.models.training_data_dir
     try:
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         logger.info(f"Saving data to {output_dir}...")
@@ -349,7 +357,7 @@ def save_data_to_file(data: Dict, output_dir: str = "/Users/abhipsa/Documents/Vu
         return False
 
 
-def create_training_dataset(data: Dict, output_file: str = "/Users/abhipsa/Documents/VulnGuard AI/training_data/training_dataset.jsonl") -> bool:
+def create_training_dataset(data: Dict, output_file: str = None) -> bool:
     """Create a unified training dataset for Llama model
     
     Args:
@@ -359,6 +367,10 @@ def create_training_dataset(data: Dict, output_file: str = "/Users/abhipsa/Docum
     Returns:
         bool: True if successful, False otherwise
     """
+    if output_file is None:
+        config = get_config()
+        output_file = config.models.training_dataset_file
+    
     try:
         logger.info("Creating unified training dataset...")
         Path(output_file).parent.mkdir(parents=True, exist_ok=True)
@@ -480,7 +492,8 @@ def main():
         logger.info(f"  • CVE-GSA Relationships: {len(cve_gsa_rels)}")
         logger.info(f"  • CVE-MITRE Relationships: {len(cve_mitre_rels)}")
         logger.info(f"  • CVE-MITRE-GSA Relationships: {len(cve_mitre_gsa_rels)}")
-        logger.info(f"\nTraining data saved to: /Users/abhipsa/Documents/VulnGuard AI/training_data/")
+        config = get_config()
+        logger.info(f"\nTraining data saved to: {config.models.training_data_dir}")
         logger.info("="*70 + "\n")
         
         return True

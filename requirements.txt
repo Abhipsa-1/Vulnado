@@ -4,6 +4,8 @@ flask
 nltk
 sentence_transformers
 sklearn
+pydantic
+pyyaml
 # neo4j
 neontology
 neo4j==5.15.0

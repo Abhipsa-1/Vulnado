@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 import traceback
 from datetime import datetime
+from VULNADO.config.configuration import get_config
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -22,8 +23,12 @@ from VULNGUARD_AI.components.stage_05_rag_system import (
 
 # ==================== Logging Setup ====================
 
-def setup_logging(log_dir: str = "/Users/abhipsa/Documents/VulnGuard AI/logs") -> logging.Logger:
+def setup_logging(log_dir: str = None) -> logging.Logger:
     """Setup comprehensive logging for inference"""
+    if log_dir is None:
+        config = get_config()
+        log_dir = config.logging.log_dir
+    
     Path(log_dir).mkdir(parents=True, exist_ok=True)
     
     logger = logging.getLogger("stage_08_inference")

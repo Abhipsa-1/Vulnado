@@ -2,6 +2,8 @@ import requests
 import json
 import zipfile
 import os
+from pathlib import Path
+from VULNADO.config.configuration import get_config
 
 class DataIngestion:
     def __init__(self, base_dir, extract_dir, mitre_path, gsa_path):
@@ -211,10 +213,12 @@ class DataIngestion:
 
 # Example usage:
 if __name__ == "__main__":
-    BASE_DIR = "/Users/abhipsa/Documents/VulnGuard AI/CVE base"
-    EXTRACT_DIR = "/Users/abhipsa/Documents/VulnGuard AI/CVE extract"
-    MITRE_PATH = "/Users/abhipsa/Documents/VulnGuard AI/MITRE.json"
-    GSA_PATH = "/Users/abhipsa/Documents/VulnGuard AI/GSA_data.json"
+    config = get_config()
+    
+    BASE_DIR = config.data.cve_base_dir
+    EXTRACT_DIR = config.data.cve_extract_dir
+    MITRE_PATH = config.data.mitre_file
+    GSA_PATH = config.data.gsa_file
 
     ingestion = DataIngestion(BASE_DIR, EXTRACT_DIR, MITRE_PATH, GSA_PATH)
     mitre_data = ingestion.fetch_mitre_attack_data()

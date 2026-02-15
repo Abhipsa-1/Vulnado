@@ -21,6 +21,7 @@ import string
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
 import nltk
+from VULNADO.config.configuration import get_config
 
 # Download required NLTK data
 try:
@@ -164,8 +165,12 @@ class CVEToMITREGSA(BaseRelationship):
 
 # ==================== Data Loading Functions ====================
 
-def load_normalized_data(base_path: str = "/Users/abhipsa/Documents/VulnGuard AI/normalized"):
+def load_normalized_data(base_path: str = None):
     """Load all normalized JSON data from disk"""
+    if base_path is None:
+        config = get_config()
+        base_path = config.data.normalized_dir
+    
     base_path = Path(base_path)
     
     data = {}

@@ -1,6 +1,7 @@
 from stage_00_data_ingestion import DataIngestion
 import json
 import os
+from VULNADO.config.configuration import get_config
 
 # Extract necessary fields from MITRE.json, GSA_data.json and CVE Extract
 class DataValidation:
@@ -266,18 +267,20 @@ def extract_gsa_fix_fields(advisory: dict) -> dict:
 
 
 if __name__ == "__main__":
-    MITRE_PATH = "/Users/abhipsa/Documents/VulnGuard AI/MITRE.json"
-    GSA_PATH = "/Users/abhipsa/Documents/VulnGuard AI/GSA_data.json"
-    CVE_EXTRACT_PATH = "/Users/abhipsa/Documents/VulnGuard AI/CVE extract"
+    config = get_config()
+    
+    MITRE_PATH = config.data.mitre_file
+    GSA_PATH = config.data.gsa_file
+    CVE_EXTRACT_PATH = config.data.cve_extract_dir
 
     # Output directories for normalized data
-    NORMALIZED_DIR = "/Users/abhipsa/Documents/VulnGuard AI/normalized"
-    MITRE_OUT = os.path.join(NORMALIZED_DIR, "mitre")
-    CVE_OUT = os.path.join(NORMALIZED_DIR, "cve")
-    GSA_OUT = os.path.join(NORMALIZED_DIR, "gsa")
+    NORMALIZED_DIR = config.data.normalized_dir
+    MITRE_OUT = config.data.normalized_mitre_file
+    CVE_OUT = config.data.normalized_cve_file
+    GSA_OUT = config.data.normalized_gsa_file
 
     # Ensure output directories exist
-    os.makedirs(MITRE_OUT, exist_ok=True)
+    os.makedirs(os.path.dirname(MITRE_OUT), exist_ok=True)
     os.makedirs(CVE_OUT, exist_ok=True)
     os.makedirs(GSA_OUT, exist_ok=True)
 

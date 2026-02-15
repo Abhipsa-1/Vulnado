@@ -1,0 +1,107 @@
+# VULNADO Configuration File
+# Central configuration for all paths, services, and parameters
+
+# ============================================================================
+# PROJECT PATHS
+# ============================================================================
+project:
+  root_dir: /Users/abhipsa/Documents/VULNADO
+  src_dir: /Users/abhipsa/Documents/VULNADO/src
+  config_dir: /Users/abhipsa/Documents/VULNADO/config
+
+# ============================================================================
+# DATA PATHS
+# ============================================================================
+data:
+  # Raw data directories
+  raw_dir: /Users/abhipsa/Documents/VULNADO/data/raw
+  processed_dir: /Users/abhipsa/Documents/VULNADO/data/processed
+  
+  # CVE data
+  cve_base_dir: /Users/abhipsa/Documents/VULNADO/CVE base
+  cve_extract_dir: /Users/abhipsa/Documents/VULNADO/CVE extract
+  
+  # Normalized data
+  normalized_dir: /Users/abhipsa/Documents/VULNADO/normalized
+  normalized_cve_file: /Users/abhipsa/Documents/VULNADO/normalized/cve/cve_core_fields.json
+  normalized_gsa_file: /Users/abhipsa/Documents/VULNADO/normalized/gsa/gsa_fix_fields.json
+  normalized_mitre_file: /Users/abhipsa/Documents/VULNADO/normalized/mitre/mitre_attack_patterns.json
+  
+  # Entity chunks
+  entity_chunks_dir: /Users/abhipsa/Documents/VULNADO/entity_chunks
+  entity_chunks_file: /Users/abhipsa/Documents/VULNADO/entity_chunks/entity_chunks.json
+  
+  # Source data files
+  mitre_file: /Users/abhipsa/Documents/VULNADO/MITRE.json
+  gsa_file: /Users/abhipsa/Documents/VULNADO/GSA_data.json
+
+# ============================================================================
+# MODEL & TRAINING PATHS
+# ============================================================================
+models:
+  model_dir: /Users/abhipsa/Documents/VULNADO/models
+  llama_finetuned_dir: /Users/abhipsa/Documents/VULNADO/models/llama_finetuned
+  training_data_dir: /Users/abhipsa/Documents/VULNADO/training_data
+  training_dataset_file: /Users/abhipsa/Documents/VULNADO/training_data/training_dataset.jsonl
+  
+  # Training data files
+  cve_nodes_file: /Users/abhipsa/Documents/VULNADO/training_data/cve_nodes.json
+  gsa_nodes_file: /Users/abhipsa/Documents/VULNADO/training_data/gsa_nodes.json
+  mitre_nodes_file: /Users/abhipsa/Documents/VULNADO/training_data/mitre_nodes.json
+  cve_mitre_relationships_file: /Users/abhipsa/Documents/VULNADO/training_data/cve_mitre_relationships.json
+  cve_gsa_relationships_file: /Users/abhipsa/Documents/VULNADO/training_data/cve_gsa_relationships.json
+  cve_mitre_gsa_relationships_file: /Users/abhipsa/Documents/VULNADO/training_data/cve_mitre_gsa_relationships.json
+  training_summary_file: /Users/abhipsa/Documents/VULNADO/training_data/summary.json
+
+# ============================================================================
+# VECTORSTORE & NEO4J PATHS
+# ============================================================================
+vectorstore:
+  persist_dir: /Users/abhipsa/Documents/VULNADO/vectorstore
+  
+neo4j:
+  data_dir: /Users/abhipsa/Documents/VULNADO/neo4j
+  cve_gsa_mappings_file: /Users/abhipsa/Documents/VULNADO/neo4j/cve_gsa_mappings.json
+  cve_mitre_mappings_file: /Users/abhipsa/Documents/VULNADO/neo4j/cve_mitre_mappings.json
+
+# ============================================================================
+# LOGGING
+# ============================================================================
+logging:
+  log_dir: /Users/abhipsa/Documents/VULNADO/logs
+  log_level: INFO
+
+# ============================================================================
+# NEO4J SERVICE CONFIGURATION
+# ============================================================================
+neo4j_service:
+  uri: neo4j://localhost:7687
+  username: neo4j
+  password: testpassword
+  
+# ============================================================================
+# LLM & MODEL CONFIGURATION
+# ============================================================================
+llm:
+  model_name: meta-llama/Llama-2-7b
+  device: auto
+  torch_dtype: float16
+  
+# ============================================================================
+# RAG CONFIGURATION
+# ============================================================================
+rag:
+  chunk_size: 512
+  chunk_overlap: 128
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+  max_context_length: 2048
+  
+# ============================================================================
+# VULNERABILITY CHATBOT CONFIGURATION
+# ============================================================================
+chatbot:
+  model_max_length: 2048
+  temperature: 0.7
+  top_p: 0.9
+  top_k: 40
+  max_new_tokens: 512

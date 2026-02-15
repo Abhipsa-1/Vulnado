@@ -14,6 +14,7 @@ from neo4j import GraphDatabase
 import traceback
 from datetime import datetime
 import numpy as np
+from VULNADO.config.configuration import get_config
 
 # Try to import optional dependencies
 try:
@@ -35,8 +36,12 @@ except (ImportError, Exception) as e:
 
 # ==================== Logging Setup ====================
 
-def setup_logging(log_dir: str = "/Users/abhipsa/Documents/VulnGuard AI/logs") -> logging.Logger:
+def setup_logging(log_dir: str = None) -> logging.Logger:
     """Setup comprehensive logging for RAG retrieval"""
+    if log_dir is None:
+        config = get_config()
+        log_dir = config.logging.log_dir
+    
     Path(log_dir).mkdir(parents=True, exist_ok=True)
     
     logger = logging.getLogger(__name__)
@@ -190,12 +195,16 @@ class EmbeddingService:
 class VectorStoreService:
     """Service for storing and retrieving embeddings using vector database"""
     
-    def __init__(self, persist_dir: str = "/Users/abhipsa/Documents/VulnGuard AI/vectorstore"):
+    def __init__(self, persist_dir: str = None):
         """Initialize vector store service
         
         Args:
             persist_dir: Directory to persist vector store
         """
+        if persist_dir is None:
+            config = get_config()
+            persist_dir = config.vectorstore.persist_dir
+        
         self.persist_dir = persist_dir
         self.client = None
         

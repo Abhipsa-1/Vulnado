@@ -8,11 +8,13 @@ from nltk.tokenize import sent_tokenize
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+from VULNADO.config.configuration import get_config
 
 nltk.download("punkt")
 
-BASE_PATH = Path("/Users/abhipsa/Documents/VulnGuard AI/normalized")
-OUTPUT_PATH = Path("/Users/abhipsa/Documents/VulnGuard AI/entity_chunks")
+config = get_config()
+BASE_PATH = Path(config.data.normalized_dir)
+OUTPUT_PATH = Path(config.data.entity_chunks_dir)
 # entity_chunks_path= OUTPUT_PATH / "entity_chunks.json"
 
 OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
