@@ -1,5 +1,5 @@
 📌 Overview
-AI VulnGuard is an AI-driven cybersecurity intelligence platform that ingests public vulnerability data, enriches it with threat intelligence, and maps vulnerabilities to real-world attack tactics using the MITRE ATT&CK framework.
+AI Vulnado is an AI-driven cybersecurity intelligence platform that ingests public vulnerability data, enriches it with threat intelligence, and maps vulnerabilities to real-world attack tactics using the MITRE ATT&CK framework.
 The goal of this project is to automate vulnerability analysis, prioritize security risks, and provide actionable remediation insights in a structured, scalable, and explainable manner.
 
 🎯 Key Objectives
@@ -10,7 +10,7 @@ Enable risk-aware vulnerability prioritization
 Build a foundation for AI-based remediation recommendations
 
 🧠 High-Level System Architecture
-# VulnGuard-AI
+# Vulnado
 AI-Powered Cyber Vulnerability Intelligence &amp; Remediation Framework
 <img width="315" height="559" alt="Screenshot 2026-01-20 at 11 24 48 PM" src="https://github.com/user-attachments/assets/7aca3f0f-855a-4426-8ad7-edf19ceb2463" />
 
