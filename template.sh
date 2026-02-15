@@ -10,6 +10,7 @@ touch .github/workflows/.gitkeep
 
 # Source structure
 mkdir -p src/$PROJECT_NAME/{components,pipeline,entity,utils,config,constants,logger,exception}
+# mkdir -p src/$PROJECT_NAME/components/schema
 touch src/$PROJECT_NAME/__init__.py
 
 # Components (pipeline stages)
@@ -17,13 +18,20 @@ touch src/$PROJECT_NAME/components/__init__.py
 touch src/$PROJECT_NAME/components/stage_00_data_ingestion.py
 touch src/$PROJECT_NAME/components/stage_01_data_validation.py
 touch src/$PROJECT_NAME/components/stage_02_data_transformation.py
-touch src/$PROJECT_NAME/components/stage_03_feature_engineering.py
-touch src/$PROJECT_NAME/components/stage_04_attack_mapping.py
-touch src/$PROJECT_NAME/components/stage_05_model_training.py
+touch src/$PROJECT_NAME/components/stage_03_schema.py
+touch src/$PROJECT_NAME/components/stage_04_knowledge_graph.py
+touch src/$PROJECT_NAME/components/stage_05_attack_mapping.py
+touch src/$PROJECT_NAME/components/stage_06_model_training.py
 
 # Pipeline
 touch src/$PROJECT_NAME/pipeline/__init__.py
 touch src/$PROJECT_NAME/pipeline/training_pipeline.py
+
+#knowledge graph module
+# touch src/$PROJECT_NAME/components/schema/basenode.py
+# touch src/$PROJECT_NAME/components/schema/baserelationship.py
+# touch src/$PROJECT_NAME/components/schema/init_graph.py
+
 
 # Entity
 touch src/$PROJECT_NAME/entity/__init__.py

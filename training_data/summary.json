@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-02-14T23:00:40.583267",
+  "total_cve_nodes": 4082,
+  "total_mitre_nodes": 835,
+  "total_gsa_nodes": 30,
+  "total_cve_gsa_relationships": 11,
+  "total_cve_mitre_relationships": 10399,
+  "total_cve_mitre_gsa_relationships": 0
+}

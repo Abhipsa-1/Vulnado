@@ -1,0 +1,57 @@
+[
+  {
+    "source_cve": "CVE-2026-25253",
+    "target_gsa": "GHSA-g8p2-7wf7-98mq",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2026-24763",
+    "target_gsa": "GHSA-mc68-q9jw-2h3v",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2026-1777",
+    "target_gsa": "GHSA-rjrp-m2jw-pv9c",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2026-1778",
+    "target_gsa": "GHSA-62rc-f4v9-h543",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2020-36947",
+    "target_gsa": "GHSA-qp2j-v5jg-hg68",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2026-1770",
+    "target_gsa": "GHSA-gj28-gw7w-3pxc",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2026-25228",
+    "target_gsa": "GHSA-vrhw-v2hw-jffx",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2026-22219",
+    "target_gsa": "GHSA-2g59-m95p-pgfq",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2026-21696",
+    "target_gsa": "GHSA-2497-gp99-2m74",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2025-69199",
+    "target_gsa": "GHSA-8w7m-w749-rx98",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  },
+  {
+    "source_cve": "CVE-2025-69198",
+    "target_gsa": "GHSA-jw2v-cq5x-q68g",
+    "relationship_type": "HAS_GSA_ADVISORY"
+  }
+]
