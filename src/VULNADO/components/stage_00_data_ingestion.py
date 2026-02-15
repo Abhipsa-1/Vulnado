@@ -15,13 +15,10 @@ class DataIngestion:
         os.makedirs(self.base_dir, exist_ok=True)
         os.makedirs(self.extract_dir, exist_ok=True)
 
-        self.NVD_FEEDS = {
-            "recent": "https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-recent.json.zip",
-            "modified": "https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-modified.json.zip",
-            "2026": "https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-2026.json.zip",
-        }
-        self.MITREURL = "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack.json"
-        self.GSA = "https://api.github.com/advisories"
+        config = get_config()
+        self.NVD_FEEDS = config.data_sources.nvd_feeds
+        self.MITREURL = config.data_sources.mitre_url
+        self.GSA = config.data_sources.gsa_url
         # self.GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
         # self.GITHUB_API_URL = "https://api.github.com/graphql"
         # self.QUERY = """

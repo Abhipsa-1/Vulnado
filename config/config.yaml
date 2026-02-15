@@ -10,6 +10,22 @@ project:
   config_dir: /Users/abhipsa/Documents/VULNADO/config
 
 # ============================================================================
+# DATA SOURCES - External APIs and Feeds
+# ============================================================================
+data_sources:
+  # NVD (National Vulnerability Database) Feeds
+  nvd_feeds:
+    recent: https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-recent.json.zip
+    modified: https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-modified.json.zip
+    "2026": https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-2026.json.zip
+  
+  # MITRE ATT&CK Framework
+  mitre_url: https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack.json
+  
+  # GitHub Security Advisories
+  gsa_url: https://api.github.com/advisories
+
+# ============================================================================
 # DATA PATHS
 # ============================================================================
 data:

@@ -17,6 +17,13 @@ class PathConfig(BaseModel):
     config_dir: str
 
 
+class DataSourcesConfig(BaseModel):
+    """External data sources configuration"""
+    nvd_feeds: Dict[str, str]
+    mitre_url: str
+    gsa_url: str
+
+
 class DataConfig(BaseModel):
     """Data paths configuration"""
     raw_dir: str
@@ -100,6 +107,7 @@ class ChatbotConfig(BaseModel):
 class VulnadoConfig(BaseModel):
     """Main VULNADO configuration"""
     project: PathConfig
+    data_sources: DataSourcesConfig
     data: DataConfig
     models: ModelsConfig
     vectorstore: VectorstoreConfig
