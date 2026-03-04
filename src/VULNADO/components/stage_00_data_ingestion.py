@@ -31,6 +31,12 @@ class DataIngestion:
         self.nvd_api_key = os.getenv("NVD_API_KEY")  # Optional — get free key at https://nvd.nist.gov/developers/request-an-api-key
         self.github_token = os.getenv("GITHUB_TOKEN")  # Optional — increases GSA rate limit from 60 to 5000 req/hr
         self.rate_delay = NVD_RATE_LIMIT_DELAY_WITH_KEY if self.nvd_api_key else NVD_RATE_LIMIT_DELAY
+        # 180-day thresholds from config
+        self.nvd_days_back = config.data_sources.nvd_days_back        # 180
+        self.mitre_days_back = config.data_sources.mitre_days_back    # 180
+        self.gsa_days_back = config.data_sources.gsa_days_back        # 180
+        self.gsa_per_page = config.data_sources.gsa_per_page          # 100
+        self.gsa_max_pages = config.data_sources.gsa_max_pages        # 18
 
     # =========================================================================
     # CVE — NVD 2.0 REST API
@@ -112,7 +118,7 @@ class DataIngestion:
         self,
         pub_start_date: Optional[str] = None,
         pub_end_date: Optional[str] = None,
-        days_back: int = 120,
+        days_back: Optional[int] = None,
         output_path: Optional[str] = None,
     ) -> List[Dict]:
         """
@@ -130,7 +136,8 @@ class DataIngestion:
         if not pub_end_date:
             pub_end_date = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.000")
         if not pub_start_date:
-            pub_start_date = (datetime.utcnow() - timedelta(days=days_back)).strftime("%Y-%m-%dT%H:%M:%S.000")
+            _days = days_back if days_back is not None else self.nvd_days_back
+            pub_start_date = (datetime.utcnow() - timedelta(days=_days)).strftime("%Y-%m-%dT%H:%M:%S.000")
 
         if not output_path:
             output_path = os.path.join(self.extract_dir, "nvdcve-realtime.json")
@@ -285,6 +292,24 @@ class DataIngestion:
 
         print(f"  Parsed {len(techniques)} MITRE ATT&CK techniques (non-deprecated)")
 
+        # Apply 180-day freshness filter based on `modified` field
+        cutoff = datetime.utcnow() - timedelta(days=self.mitre_days_back)
+        filtered = []
+        for t in techniques:
+            modified_str = t.get("modified", "")
+            if modified_str:
+                try:
+                    # STIX timestamps: "2024-04-15T14:00:00.000Z"
+                    modified_dt = datetime.strptime(modified_str[:19], "%Y-%m-%dT%H:%M:%S")
+                    if modified_dt >= cutoff:
+                        filtered.append(t)
+                except ValueError:
+                    filtered.append(t)   # keep if unparseable
+            else:
+                filtered.append(t)       # keep if no date
+        print(f"  After {self.mitre_days_back}-day filter: {len(filtered)} techniques (modified since {cutoff.strftime('%Y-%m-%d')})")
+        techniques = filtered
+
         # Save raw stix to original path for compatibility
         with open(self.mitre_path, "w") as f:
             json.dump(raw, f, indent=2)
@@ -311,19 +336,67 @@ class DataIngestion:
             headers["Authorization"] = f"Bearer {self.github_token}"
         return headers
 
-    def fetch_gsa_data(self, per_page: int = 100, max_pages: int = 10) -> List[Dict]:
+    def _parse_gsa_advisory(self, advisory: Dict) -> List[Dict]:
+        """Parse a single GitHub Advisory into one or more flat records."""
+        vulnerabilities = advisory.get("vulnerabilities", [])
+        cvss_severities = advisory.get("cvss_severities", {})
+        cvss_v3 = cvss_severities.get("cvss_v3", {})
+        cvss_v4 = cvss_severities.get("cvss_v4", {})
+        cwes = [c.get("cwe_id", "") for c in advisory.get("cwes", [])]
+
+        base = {
+            "ghsa_id": advisory.get("ghsa_id", ""),
+            "cve_id": advisory.get("cve_id") or "",
+            "summary": advisory.get("summary", ""),
+            "description": (advisory.get("description") or "")[:400],
+            "severity": advisory.get("severity", "").upper(),
+            "cwes": cwes,
+            "cvss_v3_score": cvss_v3.get("score", 0.0),
+            "cvss_v3_vector": cvss_v3.get("vector_string", ""),
+            "cvss_v4_score": cvss_v4.get("score", 0.0),
+            "cvss_v4_vector": cvss_v4.get("vector_string", ""),
+            "published_at": advisory.get("published_at", ""),
+            "updated_at": advisory.get("updated_at", ""),
+            "html_url": advisory.get("html_url", ""),
+            "source": "GHSA",
+        }
+
+        if vulnerabilities:
+            records = []
+            for vuln in vulnerabilities:
+                pkg = vuln.get("package", {})
+                records.append({
+                    **base,
+                    "package": pkg.get("name", ""),
+                    "ecosystem": pkg.get("ecosystem", ""),
+                    "vulnerable_versions": vuln.get("vulnerable_version_range", ""),
+                    "fixed_version": vuln.get("first_patched_version", ""),
+                })
+            return records
+        else:
+            return [{**base, "package": "", "ecosystem": "", "vulnerable_versions": "", "fixed_version": ""}]
+
+    def fetch_gsa_data(self, per_page: Optional[int] = None, max_pages: Optional[int] = None) -> List[Dict]:
         """
         Fetch GitHub Security Advisories (GHSA) from GitHub REST API.
-        Returns reviewed advisories sorted by most recently updated.
+        Returns reviewed advisories published within the last `gsa_days_back` days.
 
         Args:
-            per_page: Records per page (max 100)
-            max_pages: Max pages to fetch
+            per_page: Records per page (max 100) — defaults to config value
+            max_pages: Max pages to fetch — defaults to config value
 
         Returns:
             List of advisory dicts
         """
+        per_page = min(per_page or self.gsa_per_page, 100)
+        max_pages = max_pages or self.gsa_max_pages
+
+        # 180-day cutoff — also passed to GitHub API as `published_since`
+        cutoff = datetime.utcnow() - timedelta(days=self.gsa_days_back)
+        published_since = cutoff.strftime("%Y-%m-%dT%H:%M:%SZ")
+
         print(f"\nFetching GitHub Security Advisories")
+        print(f"  Threshold: last {self.gsa_days_back} days (published since {cutoff.strftime('%Y-%m-%d')})")
         if self.github_token:
             print("  GitHub token: present (higher rate limit: 5000 req/hr)")
         else:
@@ -335,9 +408,10 @@ class DataIngestion:
             params = {
                 "per_page": min(per_page, 100),
                 "page": page,
-                "sort": "updated",
+                "sort": "published",
                 "direction": "desc",
-                "type": "reviewed"   # only reviewed advisories (higher quality)
+                "type": "reviewed",          # only reviewed advisories (higher quality)
+                "published_since": published_since,  # GitHub API date filter (180-day window)
             }
 
             try:
@@ -357,63 +431,27 @@ class DataIngestion:
                 print(f"  No more advisories at page {page}")
                 break
 
+            # Belt-and-suspenders: stop if the oldest record on this page is before cutoff
+            oldest_pub = advisories[-1].get("published_at", "")
+            if oldest_pub:
+                try:
+                    oldest_dt = datetime.strptime(oldest_pub[:19], "%Y-%m-%dT%H:%M:%S")
+                    if oldest_dt < cutoff:
+                        # Filter this partial page and stop paging
+                        advisories = [
+                            a for a in advisories
+                            if datetime.strptime(a.get("published_at", "1970-01-01T00:00:00")[:19],
+                                                 "%Y-%m-%dT%H:%M:%S") >= cutoff
+                        ]
+                        print(f"  Page {page}: reached {self.gsa_days_back}-day boundary, stopping early")
+                        for advisory in advisories:
+                            gsa_records.extend(self._parse_gsa_advisory(advisory))
+                        break
+                except ValueError:
+                    pass  # unparseable date — keep going
+
             for advisory in advisories:
-                vulnerabilities = advisory.get("vulnerabilities", [])
-
-                # Flatten CVSS scores
-                cvss_severities = advisory.get("cvss_severities", {})
-                cvss_v3 = cvss_severities.get("cvss_v3", {})
-                cvss_v4 = cvss_severities.get("cvss_v4", {})
-
-                # CWE IDs
-                cwes = [c.get("cwe_id", "") for c in advisory.get("cwes", [])]
-
-                if vulnerabilities:
-                    for vuln in vulnerabilities:
-                        pkg = vuln.get("package", {})
-                        record = {
-                            "ghsa_id": advisory.get("ghsa_id", ""),
-                            "cve_id": advisory.get("cve_id") or "",
-                            "summary": advisory.get("summary", ""),
-                            "description": (advisory.get("description") or "")[:400],
-                            "severity": advisory.get("severity", "").upper(),
-                            "package": pkg.get("name", ""),
-                            "ecosystem": pkg.get("ecosystem", ""),
-                            "vulnerable_versions": vuln.get("vulnerable_version_range", ""),
-                            "fixed_version": vuln.get("first_patched_version", ""),
-                            "cwes": cwes,
-                            "cvss_v3_score": cvss_v3.get("score", 0.0),
-                            "cvss_v3_vector": cvss_v3.get("vector_string", ""),
-                            "cvss_v4_score": cvss_v4.get("score", 0.0),
-                            "cvss_v4_vector": cvss_v4.get("vector_string", ""),
-                            "published_at": advisory.get("published_at", ""),
-                            "updated_at": advisory.get("updated_at", ""),
-                            "html_url": advisory.get("html_url", ""),
-                            "source": "GHSA"
-                        }
-                        gsa_records.append(record)
-                else:
-                    # Advisory with no specific vuln packages — still useful
-                    gsa_records.append({
-                        "ghsa_id": advisory.get("ghsa_id", ""),
-                        "cve_id": advisory.get("cve_id") or "",
-                        "summary": advisory.get("summary", ""),
-                        "description": (advisory.get("description") or "")[:400],
-                        "severity": advisory.get("severity", "").upper(),
-                        "package": "",
-                        "ecosystem": "",
-                        "vulnerable_versions": "",
-                        "fixed_version": "",
-                        "cwes": cwes,
-                        "cvss_v3_score": cvss_v3.get("score", 0.0),
-                        "cvss_v3_vector": cvss_v3.get("vector_string", ""),
-                        "cvss_v4_score": cvss_v4.get("score", 0.0),
-                        "cvss_v4_vector": cvss_v4.get("vector_string", ""),
-                        "published_at": advisory.get("published_at", ""),
-                        "updated_at": advisory.get("updated_at", ""),
-                        "html_url": advisory.get("html_url", ""),
-                        "source": "GHSA"
-                    })
+                gsa_records.extend(self._parse_gsa_advisory(advisory))
 
             print(f"  Page {page}: {len(advisories)} advisories → running total: {len(gsa_records)}")
 
@@ -494,14 +532,14 @@ if __name__ == "__main__":
 
     ingestion = DataIngestion(BASE_DIR, EXTRACT_DIR, MITRE_PATH, GSA_PATH)
 
-    # Fetch CVEs published in last 120 days (adjust days_back as needed)
-    cve_data = ingestion.fetch_cve_data(days_back=120)
+    # Fetch CVEs published in last nvd_days_back days (180 from config)
+    cve_data = ingestion.fetch_cve_data()
 
-    # Fetch all MITRE ATT&CK techniques
+    # Fetch MITRE ATT&CK techniques modified in last mitre_days_back days (180 from config)
     mitre_data = ingestion.fetch_mitre_attack_data()
 
-    # Fetch latest GitHub Security Advisories (10 pages × 100 = up to 1000 advisories)
-    gsa_data = ingestion.fetch_gsa_data(per_page=100, max_pages=10)
+    # Fetch GitHub Security Advisories published in last gsa_days_back days (180 from config)
+    gsa_data = ingestion.fetch_gsa_data()
 
     print(f"\n=== Ingestion Complete ===")
     print(f"  CVEs:       {len(cve_data)}")

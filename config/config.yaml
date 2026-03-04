@@ -16,17 +16,19 @@ data_sources:
   # NVD 2.0 REST API (replaces old zip feeds — supports pagination, date filtering, single CVE lookup)
   nvd_api_url: https://services.nvd.nist.gov/rest/json/cves/2.0
   nvd_results_per_page: 2000        # NVD max per page
-  nvd_days_back: 120                # default lookback window in days
+  nvd_days_back: 180                # threshold: last 180 days of CVEs
   # Set env var NVD_API_KEY for higher rate limit (50 req/30s vs 5 req/30s without key)
   # Get free key at: https://nvd.nist.gov/developers/request-an-api-key
 
   # MITRE ATT&CK Framework — STIX 2.1 enterprise dataset
   mitre_url: https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack.json
+  mitre_days_back: 180              # threshold: filter techniques modified in last 180 days
 
   # GitHub Security Advisories REST API
   gsa_url: https://api.github.com/advisories
   gsa_per_page: 100                 # GitHub max is 100 with auth token
-  gsa_max_pages: 10
+  gsa_max_pages: 18                 # 18 pages x 100 = ~1800 advisories (~180 days worth)
+  gsa_days_back: 180                # threshold: filter advisories published in last 180 days
   # Set env var GITHUB_TOKEN for higher rate limit (5000 req/hr vs 60 req/hr without token)
 
 # ============================================================================

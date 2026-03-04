@@ -21,11 +21,13 @@ class DataSourcesConfig(BaseModel):
     """External data sources configuration"""
     nvd_api_url: str
     nvd_results_per_page: int = 2000
-    nvd_days_back: int = 120
+    nvd_days_back: int = 180
     mitre_url: str
+    mitre_days_back: int = 180
     gsa_url: str
     gsa_per_page: int = 100
-    gsa_max_pages: int = 10
+    gsa_max_pages: int = 18
+    gsa_days_back: int = 180
 
 
 class DataConfig(BaseModel):
