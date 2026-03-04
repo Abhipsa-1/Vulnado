@@ -19,9 +19,13 @@ class PathConfig(BaseModel):
 
 class DataSourcesConfig(BaseModel):
     """External data sources configuration"""
-    nvd_feeds: Dict[str, str]
+    nvd_api_url: str
+    nvd_results_per_page: int = 2000
+    nvd_days_back: int = 120
     mitre_url: str
     gsa_url: str
+    gsa_per_page: int = 100
+    gsa_max_pages: int = 10
 
 
 class DataConfig(BaseModel):

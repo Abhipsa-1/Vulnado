@@ -52,9 +52,15 @@ logger = setup_logging()
 # ==================== Configuration ====================
 
 PIPELINE_CONFIG = {
-    'base_path': '/Users/abhipsa/Documents/VulnGuard AI',
-    'src_path': '/Users/abhipsa/Documents/VulnGuard AI/src/VULNGUARD_AI/components',
+    'base_path': '/Users/abhipsa/Documents/VULNADO',
+    'src_path': '/Users/abhipsa/Documents/VULNADO/src/VULNADO/components',
     'stages': {
+        'stage_00': {
+            'name': 'Real-time Data Ingestion',
+            'script': 'stage_00_data_ingestion.py',
+            'enabled': True,
+            'description': 'Fetch live CVEs from NVD 2.0 API, MITRE ATT&CK, GitHub Advisories'
+        },
         'stage_04': {
             'name': 'Neo4j Data Fetching',
             'script': 'stage_04_data_fetch_neo4j.py',
