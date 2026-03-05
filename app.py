@@ -67,20 +67,41 @@ def chat():
     if bot:
         try:
             result = bot.chat(message)
+            # Pass through full chatbot response (answer, intent, confidence, entities, suggested_followups)
             return jsonify({
-                "response": result.get("response", ""),
-                "sources": result.get("sources", []),
-                "timestamp": datetime.utcnow().isoformat()
+                "answer":             result.get("answer", ""),
+                "intent":             result.get("intent", "general_security"),
+                "confidence":         result.get("confidence", 0.0),
+                "entities":           result.get("entities", {}),
+                "suggested_followups": result.get("suggested_followups", []),
+                "timestamp":          result.get("timestamp", datetime.utcnow().isoformat()),
             })
         except Exception as e:
             logger.error(f"Chat error: {e}")
             # Fall through to demo response
 
-    # Demo / fallback when chatbot is unavailable
+    # Demo / fallback when chatbot or Neo4j is unavailable
     return jsonify({
-        "response": f"Analyzing: {message}\n\nThis is a demo response. Neo4j integration ready at bolt://neo4j:7687",
-        "sources": ["CVE Database", "MITRE ATT&CK", "Neo4j Graph"],
-        "timestamp": datetime.utcnow().isoformat()
+        "answer": (
+            f"**Query received:** {message}\n\n"
+            "⚠️ The knowledge graph (Neo4j) is currently offline on this instance. "
+            "The full AI chatbot requires Neo4j to be running.\n\n"
+            "**What VULNADO can answer when fully connected:**\n"
+            "- CVE details, CVSS scores, affected packages\n"
+            "- MITRE ATT&CK technique mapping\n"
+            "- GitHub Advisory (GHSA) data\n"
+            "- Remediation recommendations\n"
+            "- Risk prioritization across 180 days of data"
+        ),
+        "intent": "general_security",
+        "confidence": 1.0,
+        "entities": {},
+        "suggested_followups": [
+            "What are the top critical CVEs in the last 30 days?",
+            "What MITRE techniques are used in privilege escalation?",
+            "How do I remediate a remote code execution vulnerability?",
+        ],
+        "timestamp": datetime.utcnow().isoformat(),
     })
 
 
