@@ -105,6 +105,26 @@
     .badge-mitre { background: rgba(201,168,124,0.15); color: var(--accent); border: 1px solid rgba(201,168,124,0.3); }
     .badge-ghsa  { background: rgba(92,168,124,0.15);  color: var(--low);   border: 1px solid rgba(92,168,124,0.3); }
 
+    /* ── Sync status bar ── */
+    .sync-bar {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      padding: 6px 24px; border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,0.25); font-size: 11px; color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .sync-source { display: flex; align-items: center; gap: 6px; }
+    .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; flex-shrink: 0; }
+    .sync-dot.stale  { background: #e0a85c; }
+    .sync-dot.never  { background: #888; }
+    .sync-dot.error  { background: #e05c5c; }
+    .sync-label { font-weight: 600; color: var(--beige-light); }
+    .sync-count { opacity: .7; }
+    .sync-trigger { margin-left: auto; background: none; border: 1px solid var(--border);
+      color: var(--text-muted); font-size: 10px; padding: 2px 10px; border-radius: 12px;
+      cursor: pointer; transition: border-color .2s, color .2s; }
+    .sync-trigger:hover { border-color: var(--accent); color: var(--accent); }
+    .sync-trigger:disabled { opacity: .4; cursor: not-allowed; }
+
     /* ── Chat window ── */
     .chat-window { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
     .chat-window::-webkit-scrollbar { width: 5px; }
@@ -284,6 +304,26 @@
       </div>
     </div>
 
+    <!-- Real-time sync status bar -->
+    <div class="sync-bar" id="sync-bar">
+      <div class="sync-source">
+        <span class="sync-dot never" id="dot-cve"></span>
+        <span class="sync-label">NVD</span>
+        <span class="sync-count" id="lbl-cve">loading…</span>
+      </div>
+      <div class="sync-source">
+        <span class="sync-dot never" id="dot-gsa"></span>
+        <span class="sync-label">GHSA</span>
+        <span class="sync-count" id="lbl-gsa">loading…</span>
+      </div>
+      <div class="sync-source">
+        <span class="sync-dot never" id="dot-mitre"></span>
+        <span class="sync-label">ATT&amp;CK</span>
+        <span class="sync-count" id="lbl-mitre">loading…</span>
+      </div>
+      <button class="sync-trigger" id="sync-btn" onclick="triggerSync()">↻ Sync now</button>
+    </div>
+
     <div class="chat-window" id="chat-window">
       <div class="welcome" id="welcome-screen">
         <div class="welcome-icon">🛡️</div>
@@ -340,7 +380,8 @@ let sessions  = JSON.parse(localStorage.getItem('vulnado_sessions') || '[]');
 let currentSession = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  checkHealth();
+  checkStatus();
+  setInterval(checkStatus, 30000);   // refresh every 30s
   renderHistory();
   document.getElementById('user-input').addEventListener('input', () => {
     document.getElementById('send-btn').disabled =
@@ -348,16 +389,73 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-async function checkHealth() {
+function _timeSince(isoStr) {
+  if (!isoStr) return 'never';
+  const diff = Math.floor((Date.now() - new Date(isoStr)) / 1000);
+  if (diff < 60)   return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400)return `${Math.floor(diff/3600)}h ago`;
+  return `${Math.floor(diff/86400)}d ago`;
+}
+
+function _syncDotClass(isoStr, error) {
+  if (error)   return 'sync-dot error';
+  if (!isoStr) return 'sync-dot never';
+  const hours = (Date.now() - new Date(isoStr)) / 3600000;
+  return hours > 4 ? 'sync-dot stale' : 'sync-dot';
+}
+
+async function checkStatus() {
   try {
-    const r = await fetch(API + '/health');
-    const ok = r.ok;
-    document.getElementById('status-dot').className = 'status-dot' + (ok ? '' : ' offline');
-    document.getElementById('status-text').textContent = ok ? 'System online' : 'System offline';
+    const r = await fetch(API + '/api/status');
+    const data = await r.json();
+
+    // Sidebar health dot
+    const neo4jOk = data.neo4j === 'online';
+    document.getElementById('status-dot').className = 'status-dot' + (neo4jOk ? '' : ' offline');
+    document.getElementById('status-text').textContent = neo4jOk ? 'Neo4j online' : 'Neo4j offline';
+
+    // Sync bar
+    const sources = (data.sync && data.sync.sources) || {};
+    for (const [key, label] of [['cve','dot-cve','lbl-cve'],['gsa','dot-gsa','lbl-gsa'],['mitre','dot-mitre','lbl-mitre']]) {
+      const s = sources[key] || {};
+      const dotEl = document.getElementById(label[1] || `dot-${key}`);
+      const lblEl = document.getElementById(label[2] || `lbl-${key}`);
+      if (dotEl) dotEl.className = _syncDotClass(s.last_sync, s.error);
+      if (lblEl) {
+        const total = s.total_records ? `${s.total_records.toLocaleString()} records` : 'no data';
+        const when  = s.last_sync ? `· synced ${_timeSince(s.last_sync)}` : '· never synced';
+        lblEl.textContent = `${total} ${when}`;
+      }
+    }
+    // Fix: loop above uses wrong indices — patch label ids directly
+    const src = sources;
+    [['cve','dot-cve','lbl-cve'],['gsa','dot-gsa','lbl-gsa'],['mitre','dot-mitre','lbl-mitre']].forEach(([k,d,l])=>{
+      const s = src[k] || {};
+      const de = document.getElementById(d); const le = document.getElementById(l);
+      if (de) de.className = _syncDotClass(s.last_sync, s.error);
+      if (le) {
+        const total = s.total_records ? `${s.total_records.toLocaleString()} records` : 'no data';
+        const when  = s.last_sync ? `synced ${_timeSince(s.last_sync)}` : 'not yet synced';
+        le.textContent = `${total} · ${when}`;
+      }
+    });
+
   } catch {
     document.getElementById('status-dot').className = 'status-dot offline';
     document.getElementById('status-text').textContent = 'Cannot reach server';
   }
+}
+
+async function triggerSync() {
+  const btn = document.getElementById('sync-btn');
+  btn.disabled = true;
+  btn.textContent = '↻ Syncing…';
+  try {
+    await fetch(API + '/api/sync/trigger', { method: 'POST' });
+    setTimeout(checkStatus, 3000);
+  } catch {}
+  setTimeout(() => { btn.disabled = false; btn.textContent = '↻ Sync now'; }, 10000);
 }
 
 function newChat() {
