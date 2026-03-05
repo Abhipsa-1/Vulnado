@@ -29,8 +29,8 @@ def get_chatbot():
     global _chatbot
     if _chatbot is None:
         try:
-            from VULNADO.bot.vulnerability_chatbot import VulnerabilityChatbot
-            _chatbot = VulnerabilityChatbot()
+            from VULNADO.bot.vulnerability_chatbot import VulnerabilityBot
+            _chatbot = VulnerabilityBot()
             logger.info("Chatbot initialised successfully")
         except Exception as e:
             logger.warning(f"Chatbot init failed: {e}")
