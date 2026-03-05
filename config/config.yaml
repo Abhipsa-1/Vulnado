@@ -97,9 +97,9 @@ logging:
 # NEO4J SERVICE CONFIGURATION
 # ============================================================================
 neo4j_service:
-  uri: neo4j://localhost:7687
+  uri: bolt://localhost:7687
   username: neo4j
-  password: testpassword
+  password: vulnado-password-2026
   
 # ============================================================================
 # LLM & MODEL CONFIGURATION
