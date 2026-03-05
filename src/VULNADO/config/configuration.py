@@ -128,28 +128,76 @@ class VulnadoConfig(BaseModel):
         arbitrary_types_allowed = True
 
 
+def _resolve_paths(config_dict: dict, project_root: Path) -> dict:
+    """
+    Replace any hardcoded /Users/... or /home/... absolute paths in the config
+    with paths rooted at the actual project_root on this machine.
+    Only path values (strings starting with '/') that contain a known marker
+    path segment are rewritten; everything else is left unchanged.
+    """
+    MARKER = "VULNADO"  # segment that separates the machine-specific prefix from the relative tail
+
+    def rewrite(value):
+        if isinstance(value, str) and value.startswith("/"):
+            # Find the VULNADO marker and keep everything after it
+            parts = Path(value).parts
+            if MARKER in parts:
+                idx = list(parts).index(MARKER)
+                relative_tail = Path(*parts[idx + 1:]) if idx + 1 < len(parts) else Path()
+                return str(project_root / relative_tail)
+        return value
+
+    def walk(obj):
+        if isinstance(obj, dict):
+            return {k: walk(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [walk(i) for i in obj]
+        return rewrite(obj)
+
+    return walk(config_dict)
+
+
 def load_config(config_path: str = None) -> VulnadoConfig:
     """
-    Load configuration from YAML file
-    
+    Load configuration from YAML file.
+    All hardcoded absolute paths in the YAML are rewritten to be relative
+    to the actual project root on the current machine, so the same config.yaml
+    works both on macOS (development) and on EC2 (production).
+
     Args:
-        config_path: Path to config.yaml. If None, uses default location
-        
+        config_path: Path to config.yaml. If None, uses default location.
+
     Returns:
         VulnadoConfig: Loaded configuration object
     """
     if config_path is None:
-        # Try to find config.yaml in the standard location
+        # config/config.yaml sits 4 levels above this file:
+        # src/VULNADO/config/configuration.py → project root
         config_path = Path(__file__).parent.parent.parent.parent / "config" / "config.yaml"
-    
+
     config_path = Path(config_path)
-    
+
     if not config_path.exists():
         raise FileNotFoundError(f"Configuration file not found: {config_path}")
-    
+
+    # The true project root is the directory that contains config/
+    project_root = config_path.parent.parent
+
     with open(config_path, 'r') as f:
         config_dict = yaml.safe_load(f)
-    
+
+    # Rewrite machine-specific absolute paths → portable paths
+    config_dict = _resolve_paths(config_dict, project_root)
+
+    # Override neo4j_service.uri from env var if set (useful for Docker)
+    neo4j_uri = os.environ.get("NEO4J_URI")
+    if neo4j_uri:
+        config_dict.setdefault("neo4j_service", {})["uri"] = neo4j_uri
+
+    neo4j_password = os.environ.get("NEO4J_PASSWORD")
+    if neo4j_password:
+        config_dict.setdefault("neo4j_service", {})["password"] = neo4j_password
+
     return VulnadoConfig(**config_dict)
 
 
