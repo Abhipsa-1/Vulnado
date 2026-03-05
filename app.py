@@ -4,12 +4,11 @@ AI-Powered Vulnerability Analysis Chatbot
 """
 
 import os
-import json
+import sys
 import logging
 from datetime import datetime
+from pathlib import Path
 from flask import Flask, request, jsonify, render_template
-
-from src.VULNADO.config.configuration import ConfigurationManager
 
 # ---------------------------------------------------------------------------
 # App setup
@@ -18,8 +17,8 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-config_manager = ConfigurationManager()
-config = config_manager.get_config()
+# Add src to path so VULNADO modules are importable
+sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 # ---------------------------------------------------------------------------
 # Lazy-load the chatbot so the server starts even if Neo4j is offline
@@ -30,7 +29,7 @@ def get_chatbot():
     global _chatbot
     if _chatbot is None:
         try:
-            from src.VULNADO.bot.vulnerability_chatbot import VulnerabilityChatbot
+            from VULNADO.bot.vulnerability_chatbot import VulnerabilityChatbot
             _chatbot = VulnerabilityChatbot()
             logger.info("Chatbot initialised successfully")
         except Exception as e:
