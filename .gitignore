@@ -60,3 +60,6 @@ neo4j_data/
 # OS
 .DS_Store
 Thumbs.db
+.aws/credentials
+.aws/config
+.env
