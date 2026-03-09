@@ -13,20 +13,19 @@ Flow:
   5. Repeat up to MAX_ITERATIONS (5)
   6. If loop exhausted → return best partial answer
 
-Model strategy (Groq free tier):
-  ┌─────────────────────────────────┬───────────┬───────────────────────────┐
-  │ Model                           │ Context   │ Free tier limit           │
-  ├─────────────────────────────────┼───────────┼───────────────────────────┤
-  │ PRIMARY  mixtral-8x7b-32768     │ 32 768 t  │ 500k TPD / 5k TPM         │
-  │ FALLBACK llama-3.3-70b-versatile│  8 192 t  │ 100k TPD / 6k TPM         │
-  │ ECONOMY  llama-3.1-8b-instant   │  8 192 t  │ 500k TPD / 30k TPM        │
-  └─────────────────────────────────┴───────────┴───────────────────────────┘
+Model strategy (Groq free tier — as of March 2026):
+  ┌──────────────────────────────────┬───────────┬──────────────────────────┐
+  │ Model                            │ Context   │ Free tier TPM            │
+  ├──────────────────────────────────┼───────────┼──────────────────────────┤
+  │ PRIMARY  llama-3.3-70b-versatile │ 131 072 t │ 300k TPM / 1k RPM        │
+  │ FALLBACK llama-3.1-8b-instant    │ 131 072 t │ 250k TPM / 1k RPM        │
+  │ ECONOMY  openai/gpt-oss-20b      │ 131 072 t │ 250k TPM / 1k RPM        │
+  └──────────────────────────────────┴───────────┴──────────────────────────┘
 
-  Mixtral is chosen as primary because:
-  - 32k context window = entire conversation + large tool outputs fit in one call
-  - MoE architecture (8×7B) — expert routing for structured JSON output
-  - 500k TPD = 5× more daily tokens than llama-3.3-70b (solves the 429 problem)
-  - Strong instruction-following for ReAct JSON format
+  NOTE: mixtral-8x7b-32768 was DECOMMISSIONED on March 20, 2025.
+        llama-3.3-70b-versatile is Groq's recommended replacement.
+        All three models now have 131k context — no context trimming needed
+        in practice, but the safety trimmer is kept as a guard.
 
 LLM parameters:
   temperature=0.0  → fully deterministic JSON (no creative variation needed)
@@ -60,18 +59,18 @@ logger = logging.getLogger(__name__)
 MAX_ITERATIONS = 5
 
 # ---------------------------------------------------------------------------
-# Model cascade — ordered by preference
+# Model cascade — ordered by preference (all PRODUCTION models, March 2026)
 # ---------------------------------------------------------------------------
-PRIMARY_MODEL  = "mixtral-8x7b-32768"          # 32k ctx, 500k TPD — best for ReAct
-FALLBACK_MODEL = "llama-3.3-70b-versatile"     # 8k ctx, 100k TPD — strong reasoning
-ECONOMY_MODEL  = "llama-3.1-8b-instant"        # 8k ctx, 500k TPD — fast, low cost
+PRIMARY_MODEL  = "llama-3.3-70b-versatile"    # 131k ctx, best reasoning
+FALLBACK_MODEL = "llama-3.1-8b-instant"        # 131k ctx, fast + lightweight
+ECONOMY_MODEL  = "openai/gpt-oss-20b"          # 131k ctx, 1000 tps fallback
 MODEL_CASCADE  = [PRIMARY_MODEL, FALLBACK_MODEL, ECONOMY_MODEL]
 
-# Context window limits per model (tokens)
+# Context window limits per model (tokens) — all 131k as of March 2026
 MODEL_CTX_LIMIT = {
-    PRIMARY_MODEL:  32_768,
-    FALLBACK_MODEL:  8_192,
-    ECONOMY_MODEL:   8_192,
+    PRIMARY_MODEL:  131_072,
+    FALLBACK_MODEL: 131_072,
+    ECONOMY_MODEL:  131_072,
 }
 
 # Stay 15% below the hard limit to be safe
@@ -230,9 +229,9 @@ class RateLimitError(Exception):
         secs  = retry_after % 60
         human = f"{mins}m {secs}s" if mins else f"{secs}s"
         super().__init__(
-            f"🚦 Daily token limit reached on all models. "
+            f"🚦 Rate limit reached on all models. "
             f"Please try again in **{human}**. "
-            f"(Groq free tier: mixtral=500k TPD, llama-70b=100k TPD)"
+            f"(Groq free tier: llama-3.3-70b=300k TPM, llama-3.1-8b=250k TPM)"
         )
 
 
