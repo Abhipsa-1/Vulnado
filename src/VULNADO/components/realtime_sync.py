@@ -176,6 +176,130 @@ def _neo4j_upsert_gsa(records):
 
 
 # ---------------------------------------------------------------------------
+# BERT mapping helper — runs after NVD sync on newly arrived CVEs only
+# ---------------------------------------------------------------------------
+
+def _bert_map_new_cves(cve_records: list):
+    """
+    Run BERT-based CVE→MITRE mapping for a batch of CVE records fetched
+    during a live sync, then write MAPS_TO relationships into Neo4j.
+
+    Only runs if:
+      • sentence-transformers is installed (not a hard dep on EC2 lean install)
+      • MITRE nodes exist in Neo4j (at least one MITRE record reachable)
+      • The incoming batch is non-empty
+
+    Keeps the same threshold (0.32) and top_k (3) as the bulk pipeline.
+    Batches are typically small (< 200 CVEs per 2-hour window) so runtime
+    is fast — no GPU needed, all-MiniLM-L6-v2 runs on CPU in seconds.
+    """
+    if not cve_records:
+        return
+
+    try:
+        from sentence_transformers import SentenceTransformer
+        from sklearn.metrics.pairwise import cosine_similarity
+        import numpy as np
+    except ImportError:
+        logger.warning("[BERT] sentence-transformers not installed — skipping MAPS_TO for new CVEs")
+        return
+
+    driver = _get_neo4j()
+    if not driver:
+        logger.warning("[BERT] Neo4j not available — skipping MAPS_TO mapping")
+        return
+
+    # ── 1. Fetch all MITRE techniques from Neo4j ──────────────────────────
+    try:
+        with driver.session() as session:
+            result = session.run(
+                "MATCH (m:MITRE) RETURN m.technique_id AS tid, m.description AS desc"
+            )
+            mitre_rows = [(r["tid"], r["desc"]) for r in result if r["tid"] and r["desc"]]
+    except Exception as exc:
+        logger.error("[BERT] Failed to fetch MITRE nodes: %s", exc)
+        return
+
+    if not mitre_rows:
+        logger.warning("[BERT] No MITRE nodes in Neo4j — skipping mapping")
+        return
+
+    # ── 2. Preprocess texts ───────────────────────────────────────────────
+    import re
+
+    def _preprocess(text: str) -> str:
+        text = text.lower()
+        text = re.sub(r"http\S+|www\S+|https\S+", "", text)
+        text = re.sub(r"[^a-zA-Z0-9\s]", " ", text)
+        return re.sub(r"\s+", " ", text).strip()
+
+    cve_data = [
+        (r["cve_id"], _preprocess(r.get("description", "")))
+        for r in cve_records
+        if r.get("cve_id") and r.get("description", "").strip()
+    ]
+    mitre_data = [
+        (tid, _preprocess(desc))
+        for tid, desc in mitre_rows
+        if desc.strip()
+    ]
+
+    if not cve_data or not mitre_data:
+        logger.warning("[BERT] Not enough text data to run mapping")
+        return
+
+    logger.info("[BERT] Mapping %d new CVEs → %d MITRE techniques...", len(cve_data), len(mitre_data))
+
+    # ── 3. Generate embeddings ────────────────────────────────────────────
+    try:
+        model = SentenceTransformer("all-MiniLM-L6-v2")
+        cve_embeddings = model.encode([t for _, t in cve_data], convert_to_numpy=True, show_progress_bar=False)
+        mitre_embeddings = model.encode([t for _, t in mitre_data], convert_to_numpy=True, show_progress_bar=False)
+    except Exception as exc:
+        logger.error("[BERT] Embedding generation failed: %s", exc)
+        return
+
+    # ── 4. Compute cosine similarity and build MAPS_TO relationships ──────
+    SIMILARITY_THRESHOLD = 0.32
+    TOP_K = 3
+
+    relationships = []
+    for idx_cve, (cve_id, _) in enumerate(cve_data):
+        sims = cosine_similarity(cve_embeddings[idx_cve:idx_cve + 1], mitre_embeddings)[0]
+        top_indices = np.argsort(sims)[::-1][:TOP_K]
+        for idx_mitre in top_indices:
+            score = float(sims[idx_mitre])
+            if score >= SIMILARITY_THRESHOLD:
+                relationships.append({
+                    "cve_id": cve_id,
+                    "technique_id": mitre_data[idx_mitre][0],
+                    "score": round(score, 4),
+                })
+
+    if not relationships:
+        logger.info("[BERT] No CVE-MITRE matches above threshold %.2f for this batch", SIMILARITY_THRESHOLD)
+        return
+
+    # ── 5. Upsert MAPS_TO relationships into Neo4j ────────────────────────
+    upsert_query = """
+    UNWIND $rows AS r
+    MATCH (c:CVE {cve_id: r.cve_id})
+    MATCH (m:MITRE {technique_id: r.technique_id})
+    MERGE (c)-[rel:MAPS_TO]->(m)
+    SET rel.score = r.score,
+        rel.mapped_by = 'realtime_bert',
+        rel.mapped_at = datetime()
+    """
+    try:
+        with driver.session() as session:
+            session.run(upsert_query, rows=relationships)
+        logger.info("[BERT] Created/updated %d MAPS_TO relationships for %d new CVEs",
+                    len(relationships), len(cve_data))
+    except Exception as exc:
+        logger.error("[BERT] MAPS_TO upsert failed: %s", exc)
+
+
+# ---------------------------------------------------------------------------
 # Per-source sync jobs
 # ---------------------------------------------------------------------------
 
@@ -222,6 +346,9 @@ def sync_nvd():
                 new_count, _ = store.merge("cve", records)
                 # Upsert ALL incoming records to Neo4j (not just new — idempotent MERGE)
                 _neo4j_upsert_cves(records)
+                # Run BERT mapping on this batch so new CVEs get MAPS_TO relationships
+                # immediately — closes the gap left by the bulk pipeline
+                _bert_map_new_cves(records)
 
             store.update_sync_state("cve", new_count)
             logger.info("[NVD] Sync complete — %d new records", new_count)
