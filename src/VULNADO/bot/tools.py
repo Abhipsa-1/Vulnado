@@ -177,23 +177,24 @@ def get_mitre_techniques(cve_id: str) -> list:
         cve_id: Standard CVE identifier
 
     Returns:
-        List of dicts: technique_id, technique_name, description, tactics,
-                       score, mapped_by
+        List of dicts: technique_id, technique_name, tactics, platforms,
+                       detection, score, mapped_by
     """
     query = """
     MATCH (c:CVE {cve_id: $cve_id})-[r:MAPS_TO]->(m:MITRE)
     RETURN m.technique_id    AS technique_id,
            m.technique_name  AS technique_name,
-           m.description     AS description,
            m.tactics         AS tactics,
+           m.platforms       AS platforms,
+           m.detection       AS detection,
            r.score           AS score,
            r.mapped_by       AS mapped_by
     ORDER BY r.score DESC
     """
     rows = _run(query, {"cve_id": cve_id.upper()})
     for r in rows:
-        if r.get("description"):
-            r["description"] = r["description"][:200]
+        if r.get("detection") and len(r["detection"]) > 200:
+            r["detection"] = r["detection"][:200] + "…"
     return rows
 
 
@@ -266,9 +267,10 @@ def get_remediation(cve_id: str) -> dict:
     gsa_query = """
     MATCH (g:GSA {cve_id: $cve_id})
     RETURN g.ghsa_id             AS ghsa_id,
+           g.summary             AS summary,
            g.package_name        AS package,
            g.ecosystem           AS ecosystem,
-           g.vulnerable_versions AS vulnerable_versions,
+           g.vulnerable_versions AS affected_versions,
            g.fixed_version       AS fixed_version
     LIMIT 5
     """

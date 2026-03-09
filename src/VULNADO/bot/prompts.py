@@ -58,18 +58,23 @@ For any CVE question:
 - Never invent CVE IDs, scores, technique IDs, package names, or fix versions.
 
 ## ANSWER FORMAT
-Return only this flat card — no extra prose, no headers beyond what is shown:
+Return only this flat card — no extra prose, no headers beyond what is shown.
+Omit any line whose value is empty or not returned by tools.
 
 **CVE**: <cve_id>
-**Severity**: <level> (CVSS <score>)
-**Description**: <description from tool>
+**Severity**: <severity> (CVSS <base_score>)
+**Description**: <description>
+**CWE**: <cwes joined with ", "> _(omit line if not available)_
 
 **MITRE ATT&CK**:
-- <technique_id> — <technique_name> (<tactic>)
+- <technique_id> — <technique_name>
+  Tactic: <tactics> | Platforms: <platforms joined with ", ">
+  Detection: <detection, first 150 chars>
 _(None found)_ if step 2 returned empty
 
 **Fixes / Advisories**:
-- <ghsa_id> · <package> <ecosystem> · fix: <fixed_version>
+- <ghsa_id> · <package> (<ecosystem>) · affected: <affected_versions> · fix: <fixed_version>
+  Summary: <summary>
 _(None found)_ if step 3 returned empty
 """
 
@@ -88,13 +93,13 @@ Example A — CVE-2022-26134 (full data):
 {"thought": "Step 1/3: get CVE details.", "action": "get_cve_detail", "action_input": {"cve_id": "CVE-2022-26134"}}
 {"thought": "Step 2/3: get MITRE techniques.", "action": "get_mitre_techniques", "action_input": {"cve_id": "CVE-2022-26134"}}
 {"thought": "Step 3/3: get remediation.", "action": "get_remediation", "action_input": {"cve_id": "CVE-2022-26134"}}
-{"thought": "All 3 steps done.", "action": "FINAL_ANSWER", "answer": "**CVE**: CVE-2022-26134\\n**Severity**: CRITICAL (CVSS 9.8)\\n**Description**: OGNL injection in Atlassian Confluence Server allows unauthenticated RCE.\\n\\n**MITRE ATT&CK**:\\n- T1190 — Exploit Public-Facing Application (initial-access)\\n\\n**Fixes / Advisories**:\\n- GHSA-4wrk-h47v · confluence Maven · fix: 7.18.1"}
+{"thought": "All 3 steps done.", "action": "FINAL_ANSWER", "answer": "**CVE**: CVE-2022-26134\\n**Severity**: CRITICAL (CVSS 9.8)\\n**Description**: OGNL injection in Atlassian Confluence Server allows unauthenticated RCE.\\n**CWE**: CWE-74\\n\\n**MITRE ATT&CK**:\\n- T1190 — Exploit Public-Facing Application\\n  Tactic: initial-access | Platforms: Linux, Windows, macOS\\n  Detection: Monitor for unusual process execution from web-facing services.\\n\\n**Fixes / Advisories**:\\n- GHSA-4wrk-h47v · confluence (Maven) · affected: < 7.18.1 · fix: 7.18.1\\n  Summary: Unauthenticated OGNL injection allows RCE in Confluence Server."}
 
 Example B — CVE-2021-99999 (MITRE empty):
 {"thought": "Step 1/3: get CVE details.", "action": "get_cve_detail", "action_input": {"cve_id": "CVE-2021-99999"}}
-{"thought": "Step 2/3: get MITRE — returned empty, must still run Step 3.", "action": "get_mitre_techniques", "action_input": {"cve_id": "CVE-2021-99999"}}
+{"thought": "Step 2/3: MITRE returned empty — must still run Step 3.", "action": "get_mitre_techniques", "action_input": {"cve_id": "CVE-2021-99999"}}
 {"thought": "Step 3/3: get remediation.", "action": "get_remediation", "action_input": {"cve_id": "CVE-2021-99999"}}
-{"thought": "All 3 steps done.", "action": "FINAL_ANSWER", "answer": "**CVE**: CVE-2021-99999\\n**Severity**: HIGH (CVSS 7.5)\\n**Description**: Improper input validation in example-pkg allows remote DoS.\\n\\n**MITRE ATT&CK**:\\n_(None found)_\\n\\n**Fixes / Advisories**:\\n- GHSA-yyyy-zzzz · example-pkg PyPI · fix: 2.1.0"}\
+{"thought": "All 3 steps done.", "action": "FINAL_ANSWER", "answer": "**CVE**: CVE-2021-99999\\n**Severity**: HIGH (CVSS 7.5)\\n**Description**: Improper input validation in example-pkg allows remote DoS.\\n\\n**MITRE ATT&CK**:\\n_(None found)_\\n\\n**Fixes / Advisories**:\\n- GHSA-yyyy-zzzz · example-pkg (PyPI) · affected: < 2.1.0 · fix: 2.1.0\\n  Summary: Malformed input causes denial of service in example-pkg."}\
 """
 
 
