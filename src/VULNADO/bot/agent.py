@@ -61,7 +61,8 @@ from VULNADO.bot.tools import TOOLS
 
 logger = logging.getLogger(__name__)
 
-MAX_ITERATIONS = 5
+# Mandatory 3-step CVE investigation tools (must all run before FINAL_ANSWER)
+CVE_WORKFLOW_TOOLS = ["get_cve_detail", "get_mitre_techniques", "get_remediation"]
 
 # ---------------------------------------------------------------------------
 # Model cascade — ordered by SPEED first (all PRODUCTION models, March 2026)
@@ -84,6 +85,7 @@ CTX_SAFETY_FACTOR = 0.85
 # max_tokens per call type — keep small to minimise generation time
 MAX_TOKENS_TOOL_STEP    = 512    # a ReAct JSON action object is always < 200 tokens
 MAX_TOKENS_FINAL_ANSWER = 1024   # enough for a rich markdown answer
+MAX_ITERATIONS          = 5      # cap the ReAct loop
 
 
 # ---------------------------------------------------------------------------
@@ -427,9 +429,11 @@ def run(user_message: str) -> dict:
             obs = observation_message(action, tool_result)
             messages.append({"role": "user", "content": obs})
 
-            # After first tool result, always use final-answer token budget
-            # — the next LLM call should produce FINAL_ANSWER, not another tool call
-            is_final_step = True
+            # Only flip to final-answer mode once all 3 mandatory workflow steps
+            # have been called: get_cve_detail → get_mitre_techniques → get_remediation.
+            # Flipping too early cuts off steps 2 and 3 with only 1024 tokens budget.
+            workflow_done = all(t in tools_used for t in CVE_WORKFLOW_TOOLS)
+            is_final_step = workflow_done or (iteration >= MAX_ITERATIONS - 1)
             continue
 
         # ── Unknown action ────────────────────────────────────────────────
