@@ -20,7 +20,17 @@ from VULNADO.config.configuration import get_config
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Neo4j driver — lazy singleton
+# Neo4j driver — persistent connection pool
+# ---------------------------------------------------------------------------
+# A new GraphDatabase.driver() is created ONCE at import time (warm path).
+# driver.session() is cheap — it checks out a connection from the pool
+# rather than opening a new TCP socket each time.
+#
+# Key pool settings (tuned for t3.medium, single-worker Flask):
+#   max_connection_pool_size=10  — keep up to 10 idle bolt connections
+#   connection_acquisition_timeout=5  — fail fast if pool exhausted
+#   max_connection_lifetime=3600  — recycle connections every hour
+#   keep_alive=True  — TCP keepalive to avoid stale connections
 # ---------------------------------------------------------------------------
 _driver = None
 
@@ -32,10 +42,19 @@ def _get_driver():
             from neo4j import GraphDatabase
             cfg = get_config()
             ns = cfg.neo4j_service
-            _driver = GraphDatabase.driver(ns.uri, auth=(ns.username, ns.password))
-            _driver.verify_connectivity()
+            _driver = GraphDatabase.driver(
+                ns.uri,
+                auth=(ns.username, ns.password),
+                max_connection_pool_size=10,
+                connection_acquisition_timeout=5.0,
+                max_connection_lifetime=3600,
+                keep_alive=True,
+            )
+            # verify_connectivity() intentionally NOT called here —
+            # it adds ~200ms on every cold start. The first real query
+            # will surface connectivity errors fast enough.
         except Exception as exc:
-            logger.error("Neo4j connection failed in tools: %s", exc)
+            logger.error("Neo4j driver init failed in tools: %s", exc)
             _driver = None
     return _driver
 

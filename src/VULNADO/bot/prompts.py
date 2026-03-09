@@ -7,8 +7,11 @@ Prompting techniques used:
   1. ROLE + PERSONA          — sharp expert identity anchors tone and accuracy
   2. TOOL REGISTRY           — auto-generated from TOOLS dict (stays in sync)
   3. STRICT OUTPUT FORMAT    — JSON-only with no prose outside the object
-  4. FEW-SHOT EXAMPLES       — 3 examples covering tool call → observation → answer
-                               (teach the model the exact rhythm before it starts)
+  4. FEW-SHOT PRIMER         — injected ONCE as a priming turn in agent.run(),
+                               NOT embedded in the system prompt.
+                               This way it costs tokens only on the first call,
+                               and gets dropped by the context trimmer on long
+                               conversations — not hardwired into every request.
   5. CHAIN-OF-THOUGHT nudge  — "thought" field forces reasoning before action
   6. NEGATIVE CONSTRAINTS    — explicit "never do X" rules reduce hallucination
   7. CONTEXT AWARENESS       — tell the model what data the graph actually contains
@@ -16,6 +19,120 @@ Prompting techniques used:
 """
 
 from VULNADO.bot.tools import TOOLS
+
+
+def _build_tool_descriptions() -> str:
+    """Dynamically build tool descriptions from the TOOLS registry."""
+    lines = []
+    for name, meta in TOOLS.items():
+        param_lines = "\n".join(
+            f"    - {k}: {v}" for k, v in meta["parameters"].items()
+        )
+        lines.append(f"- **{name}**: {meta['description']}\n{param_lines}")
+    return "\n\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# System prompt — kept LEAN (~300 tokens, no few-shots)
+# Few-shots live in FEW_SHOT_PRIMER below and are injected once by agent.run()
+# ---------------------------------------------------------------------------
+SYSTEM_PROMPT = f"""You are **VULNADO**, an expert AI cybersecurity analyst.
+You answer questions using a live Neo4j knowledge graph (1829 CVEs, 735 MITRE ATT&CK techniques, 191 GSA advisories).
+
+## TOOLS
+{_build_tool_descriptions()}
+
+## OUTPUT — ONE JSON OBJECT PER TURN, NOTHING ELSE
+
+Tool call:
+{{"thought": "<why this tool>", "action": "<tool_name>", "action_input": {{"<param>": <value>}}}}
+
+Final answer:
+{{"thought": "<summary of findings>", "action": "FINAL_ANSWER", "answer": "<markdown answer>"}}
+
+## RULES
+- Call at most 1 tool per turn. Stop as soon as you have enough data.
+- Never invent CVE IDs, scores, versions, or technique IDs.
+- If a tool returns empty, say so — do not guess.
+- General security questions (no lookup needed) → go straight to FINAL_ANSWER.
+- MITRE confidence < 0.35 = low confidence — flag it.
+"""
+
+
+# ---------------------------------------------------------------------------
+# Few-shot primer — injected ONCE as the first assistant+user turn in run()
+# Kept separate so context trimmer can drop it on long conversations
+# ---------------------------------------------------------------------------
+FEW_SHOT_PRIMER_USER = "Show me examples of how you use your tools."
+
+FEW_SHOT_PRIMER_ASSISTANT = """\
+Sure. Here are three examples of my exact reasoning pattern:
+
+Example 1 — single lookup:
+User: "Is CVE-2021-44228 critical?"
+{"thought": "I need full details for CVE-2021-44228.", "action": "get_cve_detail", "action_input": {"cve_id": "CVE-2021-44228"}}
+OBSERVATION: {"cve_id": "CVE-2021-44228", "severity": "CRITICAL", "base_score": 10.0}
+{"thought": "Confirmed CRITICAL, score 10.0.", "action": "FINAL_ANSWER", "answer": "**CVE-2021-44228** (Log4Shell) is **CRITICAL**, CVSS **10.0**. Unauthenticated RCE via JNDI injection in Apache Log4j2."}
+
+Example 2 — MITRE lookup:
+User: "What attack techniques map to CVE-2022-26134?"
+{"thought": "I'll call get_mitre_techniques directly.", "action": "get_mitre_techniques", "action_input": {"cve_id": "CVE-2022-26134"}}
+OBSERVATION: [{"technique_id": "T1190", "technique_name": "Exploit Public-Facing Application", "score": 0.71}]
+{"thought": "One high-confidence technique found.", "action": "FINAL_ANSWER", "answer": "- **T1190 — Exploit Public-Facing Application** (initial-access, confidence 0.71)"}
+
+Example 3 — no data:
+User: "Tell me about CVE-1999-00001"
+{"thought": "Let me look it up.", "action": "get_cve_detail", "action_input": {"cve_id": "CVE-1999-00001"}}
+OBSERVATION: {}
+{"thought": "Not found.", "action": "FINAL_ANSWER", "answer": "CVE-1999-00001 is not in the knowledge graph (covers last ~180 days). Check https://nvd.nist.gov for older CVEs."}
+
+I will follow this exact pattern for every question.\
+"""
+
+
+# ---------------------------------------------------------------------------
+# Observation formatter — token-efficient summaries
+# ---------------------------------------------------------------------------
+
+def observation_message(tool_name: str, result) -> str:
+    """
+    Format a tool result as a compact observation for the LLM.
+    Hard cap at 1500 chars (~375 tokens) — enough for all tool results.
+    """
+    import json
+    cleaned = _compress_result(result)
+    result_str = json.dumps(cleaned, default=str, indent=2)
+    if len(result_str) > 1500:
+        result_str = result_str[:1500] + "\n...(truncated)"
+    return f"OBSERVATION from {tool_name}:\n{result_str}"
+
+
+def _compress_result(result):
+    """Reduce token cost of tool results without losing key information."""
+    if isinstance(result, list):
+        MAX_ITEMS = 5           # was 8 — tighter cap reduces tokens further
+        shown = result[:MAX_ITEMS]
+        remainder = len(result) - MAX_ITEMS
+        shown = [_clean_dict(r) if isinstance(r, dict) else r for r in shown]
+        if remainder > 0:
+            shown.append({"note": f"({remainder} more — narrow your query)"})
+        return shown
+    if isinstance(result, dict):
+        return _clean_dict(result)
+    return result
+
+
+def _clean_dict(d: dict) -> dict:
+    """Remove None/empty values and truncate long string fields."""
+    out = {}
+    for k, v in d.items():
+        if v is None or v == "" or v == [] or v == {}:
+            continue
+        if isinstance(v, str) and len(v) > 200:
+            v = v[:200] + "…"
+        out[k] = v
+    return out
+
 
 
 def _build_tool_descriptions() -> str:

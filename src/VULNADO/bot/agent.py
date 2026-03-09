@@ -14,18 +14,23 @@ Flow:
   6. If loop exhausted → return best partial answer
 
 Model strategy (Groq free tier — as of March 2026):
-  ┌──────────────────────────────────┬───────────┬──────────────────────────┐
-  │ Model                            │ Context   │ Free tier TPM            │
-  ├──────────────────────────────────┼───────────┼──────────────────────────┤
-  │ PRIMARY  llama-3.3-70b-versatile │ 131 072 t │ 300k TPM / 1k RPM        │
-  │ FALLBACK llama-3.1-8b-instant    │ 131 072 t │ 250k TPM / 1k RPM        │
-  │ ECONOMY  openai/gpt-oss-20b      │ 131 072 t │ 250k TPM / 1k RPM        │
-  └──────────────────────────────────┴───────────┴──────────────────────────┘
+  ┌──────────────────────────────────┬───────────┬──────────────┬──────────┐
+  │ Model                            │ Context   │ Speed (t/s)  │ TPM      │
+  ├──────────────────────────────────┼───────────┼──────────────┼──────────┤
+  │ PRIMARY  llama-3.1-8b-instant    │ 131 072 t │ 560          │ 250k     │
+  │ FALLBACK llama-3.3-70b-versatile │ 131 072 t │ 280          │ 300k     │
+  │ ECONOMY  openai/gpt-oss-20b      │ 131 072 t │ 1000         │ 250k     │
+  └──────────────────────────────────┴───────────┴──────────────┴──────────┘
 
-  NOTE: mixtral-8x7b-32768 was DECOMMISSIONED on March 20, 2025.
-        llama-3.3-70b-versatile is Groq's recommended replacement.
-        All three models now have 131k context — no context trimming needed
-        in practice, but the safety trimmer is kept as a guard.
+  8b-instant is PRIMARY for latency:
+  - 560 t/s vs 280 t/s for 70b  →  2× faster time-to-first-token
+  - ReAct tool steps only need 512 tokens; 8b handles JSON format reliably
+  - 70b as fallback for complex multi-hop reasoning if 8b rate-limited
+
+max_tokens strategy (latency-critical):
+  - Tool step:   512 tokens  (just a JSON action object, never needs more)
+  - Final answer: 1024 tokens (enough for a rich markdown answer)
+  Cutting from 2048→1024 and 1024→512 halves generation time per call.
 
 LLM parameters:
   temperature=0.0  → fully deterministic JSON (no creative variation needed)
@@ -51,7 +56,7 @@ import re
 import time
 from typing import Optional
 
-from VULNADO.bot.prompts import SYSTEM_PROMPT, observation_message
+from VULNADO.bot.prompts import SYSTEM_PROMPT, FEW_SHOT_PRIMER_USER, FEW_SHOT_PRIMER_ASSISTANT, observation_message
 from VULNADO.bot.tools import TOOLS
 
 logger = logging.getLogger(__name__)
@@ -59,11 +64,11 @@ logger = logging.getLogger(__name__)
 MAX_ITERATIONS = 5
 
 # ---------------------------------------------------------------------------
-# Model cascade — ordered by preference (all PRODUCTION models, March 2026)
+# Model cascade — ordered by SPEED first (all PRODUCTION models, March 2026)
 # ---------------------------------------------------------------------------
-PRIMARY_MODEL  = "llama-3.3-70b-versatile"    # 131k ctx, best reasoning
-FALLBACK_MODEL = "llama-3.1-8b-instant"        # 131k ctx, fast + lightweight
-ECONOMY_MODEL  = "openai/gpt-oss-20b"          # 131k ctx, 1000 tps fallback
+PRIMARY_MODEL  = "llama-3.1-8b-instant"        # 560 t/s — fastest, PRIMARY for low latency
+FALLBACK_MODEL = "llama-3.3-70b-versatile"     # 280 t/s — better reasoning, fallback
+ECONOMY_MODEL  = "openai/gpt-oss-20b"          # 1000 t/s — ultra-fast emergency fallback
 MODEL_CASCADE  = [PRIMARY_MODEL, FALLBACK_MODEL, ECONOMY_MODEL]
 
 # Context window limits per model (tokens) — all 131k as of March 2026
@@ -75,6 +80,10 @@ MODEL_CTX_LIMIT = {
 
 # Stay 15% below the hard limit to be safe
 CTX_SAFETY_FACTOR = 0.85
+
+# max_tokens per call type — keep small to minimise generation time
+MAX_TOKENS_TOOL_STEP    = 512    # a ReAct JSON action object is always < 200 tokens
+MAX_TOKENS_FINAL_ANSWER = 1024   # enough for a rich markdown answer
 
 
 # ---------------------------------------------------------------------------
@@ -118,36 +127,56 @@ def _trim_messages(messages: list, model: str) -> list:
     """
     Trim conversation history to fit within the model's context window.
 
-    Strategy:
-      - Always keep: messages[0] (system prompt) + messages[1] (original user query)
-      - Drop oldest assistant/observation pairs from the middle
-      - Keep last 2 full turns (4 messages) unconditionally
+    Message layout from run():
+      [0] system prompt
+      [1] few-shot primer user
+      [2] few-shot primer assistant
+      [3] real user query          ← always keep
+      [4+] tool call / observation pairs
 
-    Returns a new list safe to send.
+    Strategy:
+      - Hard anchors: [0] system + [3] real user query
+      - Soft anchors: [1],[2] few-shot primer — drop these FIRST when trimming
+      - Keep last 4 messages unconditionally (last 2 turns of real conversation)
     """
-    ctx_limit = int(MODEL_CTX_LIMIT.get(model, 8_192) * CTX_SAFETY_FACTOR)
+    ctx_limit = int(MODEL_CTX_LIMIT.get(model, 131_072) * CTX_SAFETY_FACTOR)
 
     if _estimate_tokens(messages) <= ctx_limit:
-        return messages  # already fits
+        return messages  # already fits — fast path
 
-    # Anchor messages: system (0) + original user (1)
-    anchors = messages[:2]
-    middle  = messages[2:]
+    # Hard anchors: system (0) + real user query (3 if primer present, else 1)
+    has_primer = (
+        len(messages) >= 4
+        and messages[1].get("content") == FEW_SHOT_PRIMER_USER
+    )
 
-    # Always keep last 4 messages (2 turns)
+    if has_primer:
+        hard_anchors = [messages[0], messages[3]]
+        soft_primer  = messages[1:3]       # drop these first
+        middle       = messages[4:]
+    else:
+        hard_anchors = [messages[0], messages[1]]
+        soft_primer  = []
+        middle       = messages[2:]
+
     tail = middle[-4:] if len(middle) >= 4 else middle[:]
     head = middle[:-4] if len(middle) >= 4 else []
 
-    # Drop pairs from oldest end of head until it fits
-    while head and _estimate_tokens(anchors + head + tail) > ctx_limit:
-        # Each pair is [assistant_turn, observation_turn] = 2 messages
+    # Step 1: try dropping only the oldest head pairs
+    candidate = hard_anchors + soft_primer + head + tail
+    while head and _estimate_tokens(candidate) > ctx_limit:
         head = head[2:]
+        candidate = hard_anchors + soft_primer + head + tail
 
-    trimmed = anchors + head + tail
-    dropped = len(messages) - len(trimmed)
+    # Step 2: if still too long, drop the few-shot primer
+    if _estimate_tokens(candidate) > ctx_limit:
+        candidate = hard_anchors + head + tail
+        logger.info("[Agent] Dropped few-shot primer to fit context window")
+
+    dropped = len(messages) - len(candidate)
     if dropped:
-        logger.info("[Agent] Trimmed %d messages to fit %s context window", dropped, model)
-    return trimmed
+        logger.info("[Agent] Trimmed %d messages for %s", dropped, model)
+    return candidate
 
 
 # ---------------------------------------------------------------------------
@@ -158,17 +187,16 @@ def _call_llm(messages: list, model: str = PRIMARY_MODEL, is_final: bool = False
     """
     Send messages to Groq and return raw text response.
 
-    Parameters used:
-      temperature=0.0   → deterministic; we need reliable JSON, not creative text
+    Parameters:
+      temperature=0.0   → deterministic; reliable JSON output
       top_p=0.9         → nucleus sampling; focus on high-probability tokens
-      top_k=40          → sample from top 40 tokens only; avoids hallucinating CVE IDs
-      max_tokens        → 2048 for final answer (rich response), 1024 for tool steps
-      frequency_penalty → 0.1 mild penalty; prevents repeating JSON scaffold verbatim
+      max_tokens        → 512 for tool steps (tiny JSON), 1024 for final answers
+      frequency_penalty → 0.1 prevents repeating JSON scaffold verbatim
 
     On 429 → cascades through MODEL_CASCADE automatically.
     """
     client = _get_groq()
-    max_tokens = 2048 if is_final else 1024
+    max_tokens = MAX_TOKENS_FINAL_ANSWER if is_final else MAX_TOKENS_TOOL_STEP
 
     def _invoke(m: str) -> str:
         trimmed = _trim_messages(messages, m)
@@ -297,11 +325,20 @@ def run(user_message: str) -> dict:
           - answer (str): final response to show the user
           - iterations (int): number of LLM calls made
           - tools_used (list): names of tools called
+          - latency_ms (int): total wall-clock time in ms
           - error (str | None): set if agent failed
     """
+    import time
+    t_start = time.monotonic()
+
     messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user",   "content": user_message},
+        {"role": "system",    "content": SYSTEM_PROMPT},
+        # Few-shot primer — injected once as a synthetic exchange.
+        # The context trimmer will drop this pair first on long conversations,
+        # so it never permanently inflates token cost.
+        {"role": "user",      "content": FEW_SHOT_PRIMER_USER},
+        {"role": "assistant", "content": FEW_SHOT_PRIMER_ASSISTANT},
+        {"role": "user",      "content": user_message},
     ]
 
     tools_used = []
@@ -311,16 +348,21 @@ def run(user_message: str) -> dict:
         iterations = iteration
         logger.debug("[Agent] Iteration %d", iteration)
 
+        # Use is_final=True when on last iteration OR when prev tool results
+        # suggest the model has enough data — reduces max_tokens on tool steps
+        is_final_step = (iteration == MAX_ITERATIONS)
+
         try:
-            # Signal is_final on last allowed iteration so LLM gets 2048 token budget
-            is_final_iter = (iteration == MAX_ITERATIONS)
-            raw = _call_llm(messages, is_final=is_final_iter)
+            t_llm = time.monotonic()
+            raw = _call_llm(messages, is_final=is_final_step)
+            logger.debug("[Agent] LLM call took %.2fs", time.monotonic() - t_llm)
         except RateLimitError as exc:
             logger.warning("[Agent] All models rate-limited: %s", exc)
             return {
                 "answer": str(exc),
                 "iterations": iterations,
                 "tools_used": tools_used,
+                "latency_ms": int((time.monotonic() - t_start) * 1000),
                 "error": "rate_limit",
                 "retry_after": exc.retry_after,
             }
@@ -330,6 +372,7 @@ def run(user_message: str) -> dict:
                 "answer": f"⚠️ Agent error: {exc}",
                 "iterations": iterations,
                 "tools_used": tools_used,
+                "latency_ms": int((time.monotonic() - t_start) * 1000),
                 "error": str(exc),
             }
 
@@ -356,18 +399,19 @@ def run(user_message: str) -> dict:
                 nested = _parse_llm_output(answer)
                 if nested and isinstance(nested.get("answer"), str):
                     answer = nested["answer"]
-            logger.info("[Agent] Final answer after %d iterations, tools: %s", iterations, tools_used)
+            elapsed = int((time.monotonic() - t_start) * 1000)
+            logger.info("[Agent] Done in %dms | %d iterations | tools: %s", elapsed, iterations, tools_used)
             return {
                 "answer": answer,
                 "iterations": iterations,
                 "tools_used": tools_used,
+                "latency_ms": elapsed,
                 "error": None,
             }
 
         # ── Tool call ─────────────────────────────────────────────────────
         if action in TOOLS:
             action_input = parsed.get("action_input", {})
-            thought = parsed.get("thought", "")
             logger.info("[Agent] Calling tool: %s with %s", action, action_input)
             tools_used.append(action)
 
@@ -375,11 +419,17 @@ def run(user_message: str) -> dict:
             messages.append({"role": "assistant", "content": raw})
 
             # Call the tool
+            t_tool = time.monotonic()
             tool_result = _dispatch(action, action_input)
+            logger.debug("[Agent] Tool %s took %.2fs", action, time.monotonic() - t_tool)
 
             # Append observation as a user turn (standard ReAct convention)
             obs = observation_message(action, tool_result)
             messages.append({"role": "user", "content": obs})
+
+            # After first tool result, always use final-answer token budget
+            # — the next LLM call should produce FINAL_ANSWER, not another tool call
+            is_final_step = True
             continue
 
         # ── Unknown action ────────────────────────────────────────────────
@@ -413,5 +463,6 @@ def run(user_message: str) -> dict:
         ),
         "iterations": iterations,
         "tools_used": tools_used,
+        "latency_ms": int((time.monotonic() - t_start) * 1000),
         "error": "max_iterations_reached",
     }
