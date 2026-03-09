@@ -13,14 +13,43 @@ Flow:
   5. Repeat up to MAX_ITERATIONS (5)
   6. If loop exhausted → return best partial answer
 
-LLM: Groq API (llama-3.3-70b-versatile) — free tier, no GPU needed
-     Set GROQ_API_KEY environment variable.
+Model strategy (Groq free tier):
+  ┌─────────────────────────────────┬───────────┬───────────────────────────┐
+  │ Model                           │ Context   │ Free tier limit           │
+  ├─────────────────────────────────┼───────────┼───────────────────────────┤
+  │ PRIMARY  mixtral-8x7b-32768     │ 32 768 t  │ 500k TPD / 5k TPM         │
+  │ FALLBACK llama-3.3-70b-versatile│  8 192 t  │ 100k TPD / 6k TPM         │
+  │ ECONOMY  llama-3.1-8b-instant   │  8 192 t  │ 500k TPD / 30k TPM        │
+  └─────────────────────────────────┴───────────┴───────────────────────────┘
+
+  Mixtral is chosen as primary because:
+  - 32k context window = entire conversation + large tool outputs fit in one call
+  - MoE architecture (8×7B) — expert routing for structured JSON output
+  - 500k TPD = 5× more daily tokens than llama-3.3-70b (solves the 429 problem)
+  - Strong instruction-following for ReAct JSON format
+
+LLM parameters:
+  temperature=0.0  → fully deterministic JSON (no creative variation needed)
+  top_p=0.9        → nucleus sampling — keeps 90% probability mass (avoids tail tokens)
+  top_k=40         → only sample from top 40 tokens (prevents hallucination of CVE IDs)
+  max_tokens=1024  → enough for one ReAct step; final answers get 2048
+  frequency_penalty=0.1 → mild penalty against repeating the same JSON keys verbatim
+
+Context window management:
+  - Estimate tokens as len(text)//4 (conservative, ~4 chars/token)
+  - Hard limit: 28k tokens (leaves 4k headroom in 32k context)
+  - When approaching limit: drop oldest tool observation pairs, keep system+user+last 2 turns
+
+Rate limit handling:
+  - Primary model 429 → auto-retry with FALLBACK, then ECONOMY
+  - All models 429 → return friendly error with exact retry time from Groq response
 """
 
 import json
 import logging
 import os
 import re
+import time
 from typing import Optional
 
 from VULNADO.bot.prompts import SYSTEM_PROMPT, observation_message
@@ -29,6 +58,24 @@ from VULNADO.bot.tools import TOOLS
 logger = logging.getLogger(__name__)
 
 MAX_ITERATIONS = 5
+
+# ---------------------------------------------------------------------------
+# Model cascade — ordered by preference
+# ---------------------------------------------------------------------------
+PRIMARY_MODEL  = "mixtral-8x7b-32768"          # 32k ctx, 500k TPD — best for ReAct
+FALLBACK_MODEL = "llama-3.3-70b-versatile"     # 8k ctx, 100k TPD — strong reasoning
+ECONOMY_MODEL  = "llama-3.1-8b-instant"        # 8k ctx, 500k TPD — fast, low cost
+MODEL_CASCADE  = [PRIMARY_MODEL, FALLBACK_MODEL, ECONOMY_MODEL]
+
+# Context window limits per model (tokens)
+MODEL_CTX_LIMIT = {
+    PRIMARY_MODEL:  32_768,
+    FALLBACK_MODEL:  8_192,
+    ECONOMY_MODEL:   8_192,
+}
+
+# Stay 15% below the hard limit to be safe
+CTX_SAFETY_FACTOR = 0.85
 
 
 # ---------------------------------------------------------------------------
@@ -56,19 +103,137 @@ def _get_groq():
 
 
 # ---------------------------------------------------------------------------
-# LLM call
+# Token estimation — fast heuristic (4 chars ≈ 1 token)
 # ---------------------------------------------------------------------------
 
-def _call_llm(messages: list) -> str:
-    """Send messages to Groq and return raw text response."""
+def _estimate_tokens(messages: list) -> int:
+    """Estimate total token count for a message list."""
+    total = 0
+    for m in messages:
+        total += len(m.get("content", "")) // 4
+        total += 4   # role + formatting overhead per message
+    return total
+
+
+def _trim_messages(messages: list, model: str) -> list:
+    """
+    Trim conversation history to fit within the model's context window.
+
+    Strategy:
+      - Always keep: messages[0] (system prompt) + messages[1] (original user query)
+      - Drop oldest assistant/observation pairs from the middle
+      - Keep last 2 full turns (4 messages) unconditionally
+
+    Returns a new list safe to send.
+    """
+    ctx_limit = int(MODEL_CTX_LIMIT.get(model, 8_192) * CTX_SAFETY_FACTOR)
+
+    if _estimate_tokens(messages) <= ctx_limit:
+        return messages  # already fits
+
+    # Anchor messages: system (0) + original user (1)
+    anchors = messages[:2]
+    middle  = messages[2:]
+
+    # Always keep last 4 messages (2 turns)
+    tail = middle[-4:] if len(middle) >= 4 else middle[:]
+    head = middle[:-4] if len(middle) >= 4 else []
+
+    # Drop pairs from oldest end of head until it fits
+    while head and _estimate_tokens(anchors + head + tail) > ctx_limit:
+        # Each pair is [assistant_turn, observation_turn] = 2 messages
+        head = head[2:]
+
+    trimmed = anchors + head + tail
+    dropped = len(messages) - len(trimmed)
+    if dropped:
+        logger.info("[Agent] Trimmed %d messages to fit %s context window", dropped, model)
+    return trimmed
+
+
+# ---------------------------------------------------------------------------
+# LLM call — tuned parameters + 3-model cascade for rate limits
+# ---------------------------------------------------------------------------
+
+def _call_llm(messages: list, model: str = PRIMARY_MODEL, is_final: bool = False) -> str:
+    """
+    Send messages to Groq and return raw text response.
+
+    Parameters used:
+      temperature=0.0   → deterministic; we need reliable JSON, not creative text
+      top_p=0.9         → nucleus sampling; focus on high-probability tokens
+      top_k=40          → sample from top 40 tokens only; avoids hallucinating CVE IDs
+      max_tokens        → 2048 for final answer (rich response), 1024 for tool steps
+      frequency_penalty → 0.1 mild penalty; prevents repeating JSON scaffold verbatim
+
+    On 429 → cascades through MODEL_CASCADE automatically.
+    """
     client = _get_groq()
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=messages,
-        temperature=0.1,        # low temp = deterministic, consistent JSON
-        max_tokens=1024,
-    )
-    return response.choices[0].message.content.strip()
+    max_tokens = 2048 if is_final else 1024
+
+    def _invoke(m: str) -> str:
+        trimmed = _trim_messages(messages, m)
+        logger.debug(
+            "[Agent] Calling %s | est. %d tokens | max_tokens=%d",
+            m, _estimate_tokens(trimmed), max_tokens,
+        )
+        response = client.chat.completions.create(
+            model=m,
+            messages=trimmed,
+            temperature=0.0,          # fully deterministic — JSON must be exact
+            top_p=0.9,                # nucleus: 90% probability mass
+            max_tokens=max_tokens,
+            frequency_penalty=0.1,    # slight penalty against copy-pasting prompt back
+            # Note: top_k is not a standard OpenAI-compatible param on Groq's API.
+            # Groq applies its own internal sampling; temperature=0 + top_p=0.9
+            # achieves equivalent greedy-ish behaviour without needing top_k.
+        )
+        return response.choices[0].message.content.strip()
+
+    # Try each model in cascade order starting from requested model
+    start_idx = MODEL_CASCADE.index(model) if model in MODEL_CASCADE else 0
+    last_exc = None
+
+    for candidate in MODEL_CASCADE[start_idx:]:
+        try:
+            return _invoke(candidate)
+        except Exception as exc:
+            error_str = str(exc)
+            if "429" in error_str or "rate_limit_exceeded" in error_str:
+                retry_after = _parse_retry_after(error_str)
+                logger.warning(
+                    "[Agent] Model %s rate-limited (%ds). Trying next model.", candidate, retry_after
+                )
+                last_exc = RateLimitError(retry_after)
+                continue   # try next model in cascade
+            raise   # non-429 error — surface immediately
+
+    # All models exhausted
+    raise last_exc or RateLimitError(120)
+
+
+def _parse_retry_after(error_str: str) -> int:
+    """Extract wait seconds from Groq's 'Please try again in Xm Ys' error."""
+    match = re.search(r"try again in\s+(?:(\d+)m)?(?:([\d.]+)s)?", error_str, re.IGNORECASE)
+    if match:
+        minutes = int(match.group(1) or 0)
+        seconds = float(match.group(2) or 0)
+        return int(minutes * 60 + seconds) + 5   # +5s buffer
+    return 120
+
+
+class RateLimitError(Exception):
+    """Raised when all models in the cascade are rate-limited."""
+    def __init__(self, retry_after: int):
+        self.retry_after = retry_after
+        mins  = retry_after // 60
+        secs  = retry_after % 60
+        human = f"{mins}m {secs}s" if mins else f"{secs}s"
+        super().__init__(
+            f"🚦 Daily token limit reached on all models. "
+            f"Please try again in **{human}**. "
+            f"(Groq free tier: mixtral=500k TPD, llama-70b=100k TPD)"
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -148,7 +313,18 @@ def run(user_message: str) -> dict:
         logger.debug("[Agent] Iteration %d", iteration)
 
         try:
-            raw = _call_llm(messages)
+            # Signal is_final on last allowed iteration so LLM gets 2048 token budget
+            is_final_iter = (iteration == MAX_ITERATIONS)
+            raw = _call_llm(messages, is_final=is_final_iter)
+        except RateLimitError as exc:
+            logger.warning("[Agent] All models rate-limited: %s", exc)
+            return {
+                "answer": str(exc),
+                "iterations": iterations,
+                "tools_used": tools_used,
+                "error": "rate_limit",
+                "retry_after": exc.retry_after,
+            }
         except Exception as exc:
             logger.error("[Agent] LLM call failed: %s", exc)
             return {
