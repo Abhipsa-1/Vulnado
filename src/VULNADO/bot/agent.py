@@ -176,6 +176,11 @@ def run(user_message: str) -> dict:
         # ── Final answer ──────────────────────────────────────────────────
         if action == "FINAL_ANSWER":
             answer = parsed.get("answer") or parsed.get("thought", "No answer produced.")
+            # LLM sometimes returns the answer as a nested JSON string — unwrap it
+            if isinstance(answer, str):
+                nested = _parse_llm_output(answer)
+                if nested and isinstance(nested.get("answer"), str):
+                    answer = nested["answer"]
             logger.info("[Agent] Final answer after %d iterations, tools: %s", iterations, tools_used)
             return {
                 "answer": answer,
