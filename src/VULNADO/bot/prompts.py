@@ -82,26 +82,18 @@ _(None found)_ if step 3 returned empty
 FEW_SHOT_PRIMER_USER = "Show me how you answer a CVE query."
 
 FEW_SHOT_PRIMER_ASSISTANT = """\
-I run 3 tool calls then return a flat card — no extra prose.
+I output one JSON object per turn. Here are two complete examples.
 
-Example A — CVE with full data:
+Example A — CVE-2022-26134 (full data):
+{"thought": "Step 1/3: get CVE details.", "action": "get_cve_detail", "action_input": {"cve_id": "CVE-2022-26134"}}
+{"thought": "Step 2/3: get MITRE techniques.", "action": "get_mitre_techniques", "action_input": {"cve_id": "CVE-2022-26134"}}
+{"thought": "Step 3/3: get remediation.", "action": "get_remediation", "action_input": {"cve_id": "CVE-2022-26134"}}
+{"thought": "All 3 steps done.", "action": "FINAL_ANSWER", "answer": "**CVE**: CVE-2022-26134\\n**Severity**: CRITICAL (CVSS 9.8)\\n**Description**: OGNL injection in Atlassian Confluence Server allows unauthenticated RCE.\\n\\n**MITRE ATT&CK**:\\n- T1190 — Exploit Public-Facing Application (initial-access)\\n\\n**Fixes / Advisories**:\\n- GHSA-4wrk-h47v · confluence Maven · fix: 7.18.1"}
 
-{"thought": "Step 1: get CVE details.", "action": "get_cve_detail", "action_input": {"cve_id": "CVE-2022-26134"}}
-OBSERVATION: {"cve_id": "CVE-2022-26134", "severity": "CRITICAL", "base_score": 9.8, "description": "OGNL injection in Atlassian Confluence Server allows unauthenticated RCE."}
-
-{"thought": "Step 2: get MITRE techniques.", "action": "get_mitre_techniques", "action_input": {"cve_id": "CVE-2022-26134"}}
-OBSERVATION: [{"technique_id": "T1190", "technique_name": "Exploit Public-Facing Application", "tactics": "initial-access", "score": 0.81}]
-
-{"thought": "Step 3: get remediation.", "action": "get_remediation", "action_input": {"cve_id": "CVE-2022-26134"}}
-OBSERVATION: {"advisories": [{"ghsa_id": "GHSA-4wrk-h47v", "package": "confluence", "ecosystem": "Maven", "fixed_version": "7.18.1"}]}
-
-{"thought": "All 3 steps done. Composing flat card.", "action": "FINAL_ANSWER", "answer": "**CVE**: CVE-2022-26134\\n**Severity**: CRITICAL (CVSS 9.8)\\n**Description**: OGNL injection in Atlassian Confluence Server allows unauthenticated RCE.\\n\\n**MITRE ATT&CK**:\\n- T1190 — Exploit Public-Facing Application (initial-access)\\n\\n**Fixes / Advisories**:\\n- GHSA-4wrk-h47v · confluence Maven · fix: 7.18.1"}
-
-Example B — MITRE empty, GSA has data:
-
-{"thought": "Step 2 returned empty. Rule: must still run Step 3.", "action": "get_remediation", "action_input": {"cve_id": "CVE-2021-99999"}}
-OBSERVATION: {"advisories": [{"ghsa_id": "GHSA-yyyy-zzzz", "package": "example-pkg", "ecosystem": "PyPI", "fixed_version": "2.1.0"}]}
-
+Example B — CVE-2021-99999 (MITRE empty):
+{"thought": "Step 1/3: get CVE details.", "action": "get_cve_detail", "action_input": {"cve_id": "CVE-2021-99999"}}
+{"thought": "Step 2/3: get MITRE — returned empty, must still run Step 3.", "action": "get_mitre_techniques", "action_input": {"cve_id": "CVE-2021-99999"}}
+{"thought": "Step 3/3: get remediation.", "action": "get_remediation", "action_input": {"cve_id": "CVE-2021-99999"}}
 {"thought": "All 3 steps done.", "action": "FINAL_ANSWER", "answer": "**CVE**: CVE-2021-99999\\n**Severity**: HIGH (CVSS 7.5)\\n**Description**: Improper input validation in example-pkg allows remote DoS.\\n\\n**MITRE ATT&CK**:\\n_(None found)_\\n\\n**Fixes / Advisories**:\\n- GHSA-yyyy-zzzz · example-pkg PyPI · fix: 2.1.0"}\
 """
 

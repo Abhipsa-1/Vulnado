@@ -271,19 +271,31 @@ class RateLimitError(Exception):
 
 def _parse_llm_output(raw: str) -> Optional[dict]:
     """
-    Extract the first valid JSON object from the LLM response.
-    LLMs sometimes wrap JSON in markdown code fences or add preamble text.
+    Extract the LAST valid JSON object from the LLM response.
+    Using last instead of first because LLMs sometimes dump a full ReAct trace
+    as plain text — the FINAL_ANSWER JSON is always the last {...} block.
     """
     # Strip markdown code fences
     cleaned = re.sub(r"```(?:json)?", "", raw).strip()
 
-    # Try direct parse first
+    # Try direct parse first (clean single-object responses)
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
         pass
 
-    # Extract first {...} block
+    # Find ALL {...} blocks and try the last one first (most likely FINAL_ANSWER)
+    matches = list(re.finditer(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)?\}", cleaned, re.DOTALL))
+    # Try full greedy last block, then each match in reverse
+    for m in reversed(matches):
+        try:
+            obj = json.loads(m.group())
+            if "action" in obj:          # must be a ReAct turn
+                return obj
+        except json.JSONDecodeError:
+            pass
+
+    # Fallback: any parseable {...} block with "action" key
     match = re.search(r"\{.*\}", cleaned, re.DOTALL)
     if match:
         try:
@@ -293,6 +305,49 @@ def _parse_llm_output(raw: str) -> Optional[dict]:
 
     logger.warning("Could not parse LLM output as JSON: %s", raw[:200])
     return None
+
+
+# ---------------------------------------------------------------------------
+# Answer sanitiser — strips leaked ReAct trace from the final answer string
+# ---------------------------------------------------------------------------
+
+_REACT_TRACE_RE = re.compile(
+    r'(\{"thought".*?"action".*?\}[\s\n]*OBSERVATION.*?(?=\{"thought"|$))',
+    re.DOTALL,
+)
+
+def _clean_answer(answer: str) -> str:
+    """
+    Remove any leaked ReAct trace lines from the final answer string.
+    The LLM occasionally dumps thought/action/OBSERVATION blocks as plain text
+    before (or instead of) the structured card.  Strip them and return only
+    the markdown card that starts with **CVE**.
+    """
+    # If the answer already starts with the card marker, nothing to do
+    if answer.lstrip().startswith("**CVE"):
+        return answer.strip()
+
+    # Try to extract just the card portion after the last OBSERVATION line
+    obs_split = re.split(r"OBSERVATION[^\n]*\n", answer)
+    if len(obs_split) > 1:
+        candidate = obs_split[-1].strip()
+        # The candidate might itself be a JSON FINAL_ANSWER — unwrap it
+        parsed = _parse_llm_output(candidate)
+        if parsed and parsed.get("action") == "FINAL_ANSWER":
+            return parsed.get("answer", candidate).strip()
+        if candidate.startswith("**CVE"):
+            return candidate
+
+    # Strip lines that look like raw JSON ReAct turns
+    lines = answer.splitlines()
+    card_lines = [
+        l for l in lines
+        if not re.match(r'^\s*\{"thought"', l) and
+           not re.match(r'^\s*OBSERVATION', l) and
+           not re.match(r'^\s*Step \d', l)
+    ]
+    cleaned = "\n".join(card_lines).strip()
+    return cleaned if cleaned else answer.strip()
 
 
 # ---------------------------------------------------------------------------
@@ -383,13 +438,19 @@ def run(user_message: str) -> dict:
         parsed = _parse_llm_output(raw)
 
         if parsed is None:
-            # LLM returned un-parseable output — treat as plain text answer
-            return {
-                "answer": raw,
-                "iterations": iterations,
-                "tools_used": tools_used,
-                "error": None,
-            }
+            # LLM returned un-parseable output (plain text trace dump).
+            # Append it as an assistant turn and ask for JSON explicitly.
+            logger.warning("[Agent] Non-JSON response, asking for JSON reformat")
+            messages.append({"role": "assistant", "content": raw})
+            messages.append({
+                "role": "user",
+                "content": (
+                    "Your last response was not valid JSON. "
+                    "Reply with a single JSON object only — either a tool call or FINAL_ANSWER. "
+                    "No prose, no OBSERVATION lines, no step headers."
+                ),
+            })
+            continue
 
         action = parsed.get("action", "")
 
@@ -401,6 +462,8 @@ def run(user_message: str) -> dict:
                 nested = _parse_llm_output(answer)
                 if nested and isinstance(nested.get("answer"), str):
                     answer = nested["answer"]
+            # Strip any leaked ReAct trace lines from the answer text
+            answer = _clean_answer(answer)
             elapsed = int((time.monotonic() - t_start) * 1000)
             logger.info("[Agent] Done in %dms | %d iterations | tools: %s", elapsed, iterations, tools_used)
             return {
